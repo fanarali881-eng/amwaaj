@@ -1,0 +1,14 @@
+.am-country-localization {}
+
+.header-localization:not(.menu-drawer__localization) .disclosure__list-wrapper {
+    right: -100px;
+    background-color: #f7f4ef;
+}
+
+.disclosure__link {
+    font-family: "Gotham-Book";
+    font-size: var(--text-15);
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0em;
+}

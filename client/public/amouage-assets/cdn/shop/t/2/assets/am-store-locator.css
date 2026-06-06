@@ -1,0 +1,21 @@
+.template--page\.store-locator .page-width--narrow {
+    max-width: 80%;
+    margin-bottom: 92px;
+}
+
+.main-page-title {
+    font-family: "Gotham-Book";
+    font-size: 32px;
+    text-transform: uppercase;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.stockist-powered-by-link {
+    display: none;
+}
+
+#stockist-widget .stockist-horizontal .stockist-side-panel {
+    background-color: #eee5da;
+    padding: 30px 10px;
+}

