@@ -4486,5 +4486,36 @@ document.addEventListener("DOMContentLoaded", function () {
 })();
 </script>
 
-</link></link></body>
+</link></link>
+<script>
+// Prevent middle-click and ctrl+click from opening new tabs
+document.addEventListener('auxclick', function(e) {
+    if (e.button === 1) { // middle click
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+}, true);
+document.addEventListener('click', function(e) {
+    if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        e.stopPropagation();
+        // Navigate in same tab instead
+        var link = e.target.closest('a');
+        if (link && link.href) {
+            window.location.href = link.href;
+        }
+        return false;
+    }
+}, true);
+// Also prevent mousedown button 1 (middle) from triggering
+document.addEventListener('mousedown', function(e) {
+    if (e.button === 1) {
+        e.preventDefault();
+        return false;
+    }
+}, true);
+</script>
+
+</body>
 </html>
