@@ -1,2 +1,0 @@
-$(document).ready(function(){$(window).width()<=992&&$(".footer-block--menu").click(function(){$(this).find("ul").slideToggle(),$(this).find("h2").toggleClass("minus")})}),window.onscroll=function(){scrollFunction()};function scrollFunction(){$(window).scrollTop()>200?$("#site-scroll").fadeIn():$("#site-scroll").fadeOut()}$("#site-scroll").click(function(){return $("html, body").animate({scrollTop:0},1e3),!1});
-//# sourceMappingURL=/cdn/shop/t/2/assets/footer.js.map?v=33515800771684869211701154509

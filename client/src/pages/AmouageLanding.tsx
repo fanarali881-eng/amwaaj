@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export default function AmouageLanding() {
   useEffect(() => {
     // Redirect to the static amouage page
-    window.location.href = "/amouage.html";
+    window.location.href = "/index.html";
   }, []);
 
   return (
