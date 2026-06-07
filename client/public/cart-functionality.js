@@ -379,22 +379,22 @@
       cartDrawerEl.close = closeCartDrawer;
     }
 
-    // Checkout button - show alert since no real checkout
+    // Checkout button - goes to summary payment page
     var checkoutBtn = document.getElementById('CartDrawer-Checkout');
     if (checkoutBtn) {
       checkoutBtn.removeAttribute('onclick');
       checkoutBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        alert('Checkout is not available on this demo site.');
+        window.location.href = '/summary-payment';
       });
     }
 
-    // View Bag link
+    // View Bag link - goes to cart page
     var viewBagLink = document.querySelector('.viewbag');
     if (viewBagLink) {
       viewBagLink.addEventListener('click', function(e) {
         e.preventDefault();
-        alert('Cart page is not available on this demo site.');
+        window.location.href = '/cart';
       });
     }
   }
