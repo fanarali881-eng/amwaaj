@@ -231,17 +231,21 @@
       }
 
       // Handle language selector click
-      const langBtn = e.target.closest('.language-selector-container button');
-      if (langBtn) {
-        e.preventDefault();
-        // Toggle language dropdown
-        let dropdown = langBtn.parentElement.querySelector('.language-dropdown');
-        if (!dropdown) {
-          dropdown = createLanguageDropdown();
-          langBtn.parentElement.appendChild(dropdown);
+      const langContainer = e.target.closest('.language-selector-container');
+      if (langContainer) {
+        const langBtn = langContainer.querySelector('button');
+        if (langBtn) {
+          e.preventDefault();
+          e.stopPropagation();
+          // Toggle language dropdown
+          let dropdown = langContainer.querySelector('.language-dropdown');
+          if (!dropdown) {
+            dropdown = createLanguageDropdown();
+            langContainer.appendChild(dropdown);
+          }
+          dropdown.hidden = !dropdown.hidden;
+          return false;
         }
-        dropdown.hidden = !dropdown.hidden;
-        return false;
       }
 
       // Handle language option click
