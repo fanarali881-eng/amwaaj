@@ -28,9 +28,7 @@ export const BANK_LOGOS: Record<string, string> = {
   'Vision Bank': '/images/banks/vision-bank.webp',
   'تساهيل': '/images/banks/nayifat-finance-company.png',
   'نايفات': '/images/banks/nayifat-finance-company.png',
-  // بنوك أجنبية
-  'Emirates NBD': '/images/banks/emirates-nbd-bank-pjsc.png',
-  'FAB': '/images/banks/first-abu-dhabi-bank-pjsc.png',
+  // بنوك أجنبية (تم نقلها للقسم الإماراتي)
   // البنوك الكويتية
   'NBK': '/images/banks/nbk.png',
   'KFH': '/images/banks/kfh.png',
