@@ -183,32 +183,527 @@
     buttons.forEach(function(b) { b.setAttribute('aria-expanded', 'false'); });
   }
 
-  // Translation map for Arabic
+  // ============================================================
+  // COMPREHENSIVE ARABIC TRANSLATION DICTIONARY
+  // ============================================================
   var TRANSLATIONS = {
+    // Main Navigation
     'PERFUMES': 'عطور',
     'COLLECTIONS': 'مجموعات',
     'BODY': 'العناية بالجسم',
     'GIFTING': 'هدايا',
     'DISCOVERY': 'اكتشف',
     'HOUSE OF AMOUAGE': 'دار أمواج',
+    'Perfumes': 'عطور',
+    'Collections': 'مجموعات',
+    'Body': 'العناية بالجسم',
+    'Gifting': 'هدايا',
+    'Discovery': 'اكتشف',
+
+    // Sub-navigation - Perfumes
+    'Best Sellers': 'الأكثر مبيعاً',
+    'New Arrivals': 'وصل حديثاً',
+    'Universal Perfumes': 'عطور يونيفرسال',
+    'Sampler Sets': 'مجموعات العينات',
+    'Miniature Sets': 'مجموعات مصغرة',
+    'Travel Sets': 'مجموعات السفر',
+    "Women's Perfumes": 'عطور نسائية',
+    "Men's Perfumes": 'عطور رجالية',
+    'Shop All': 'تسوق الكل',
+    'Eaux De Parfum': 'أو دو بارفان',
+    'Extraits De Parfum': 'إكستريه دو بارفان',
+    'The Attars': 'العطور',
+    'Attars': 'العطور',
+    'The Essences': 'الإسنسز',
+    'The Main Collection': 'المجموعة الرئيسية',
+    'The Odyssey Collection': 'مجموعة أوديسي',
+    'The Library Collection': 'مجموعة المكتبة',
+    'The Secret Garden Collection': 'مجموعة الحديقة السرية',
+    'The Exceptional Extraits': 'الإكستريه الاستثنائية',
+    'The Guidance Collection': 'مجموعة جايدنس',
+
+    // Sub-navigation - Gifting
+    'Gifts for Her': 'هدايا لها',
+    'Gifts for Him': 'هدايا له',
+    'Gifts for him': 'هدايا له',
+    'All Giftsets': 'جميع مجموعات الهدايا',
+
+    // Sub-navigation - House of Amouage
+    'Store Locator': 'محدد مواقع المتاجر',
+    'Our Story - The Gift of Kings': 'قصتنا - هدية الملوك',
+    'Our Philosophy': 'فلسفتنا',
+    "The Visitor's Centre": 'مركز الزوار',
+    "Visitor's Centre": 'مركز الزوار',
+    'Wadi Dawkah': 'وادي دوكة',
+
+    // Buttons & Actions
     'Add to bag': 'أضف إلى السلة',
     'ADD TO BAG': 'أضف إلى السلة',
+    'SHOP NOW': 'تسوق الآن',
+    'Shop now': 'تسوق الآن',
+    'shop now': 'تسوق الآن',
+    'shop Now': 'تسوق الآن',
+    'Discover': 'اكتشف',
+    'DISCOVER OUR STORY': 'اكتشف قصتنا',
+    'STORE LOCATOR': 'محدد مواقع المتاجر',
     'PROCEED TO CHECKOUT': 'متابعة الدفع',
-    'View Bag': 'عرض السلة',
-    'BAG': 'السلة',
-    'Bag Subtotal': 'المجموع الفرعي',
+    'Proceed to Checkout': 'متابعة الدفع',
     'CONTINUE SHOPPING': 'متابعة التسوق',
+    'Continue shopping': 'متابعة التسوق',
+    'View Bag': 'عرض السلة',
+    'Subscribe': 'اشترك',
+    'SIGN UP': 'اشترك',
+    'Apply': 'تطبيق',
+    'Update': 'تحديث',
+    'Clear': 'مسح',
+    'Clear all': 'مسح الكل',
     'Remove': 'حذف',
+    'Confirm': 'تأكيد',
+    'Cancel': 'إلغاء',
+    'Modify': 'تعديل',
+    'Refresh': 'تحديث',
+    'Close': 'إغلاق',
+    'Search': 'بحث',
+    'PAY NOW': 'ادفع الآن',
+    'Sign in': 'تسجيل الدخول',
+    'Log in': 'تسجيل الدخول',
+
+    // Cart & Checkout
+    'Bag': 'السلة',
+    'BAG': 'السلة',
+    'Cart': 'السلة',
+    'Bag Subtotal': 'المجموع الفرعي للسلة',
+    'Subtotal': 'المجموع الفرعي',
+    'Total': 'الإجمالي',
+    'FREE': 'مجاني',
+    'Shipping': 'الشحن',
+    'Your cart is empty': 'سلة التسوق فارغة',
+    'Your bag is empty': 'سلة التسوق فارغة',
     'Quantity': 'الكمية',
+    'Loading...': 'جاري التحميل...',
+    'Processing...': 'جاري المعالجة...',
+    'Have an account?': 'هل لديك حساب؟',
+    'to check out faster.': 'للدفع بشكل أسرع.',
+    'Taxes, Discounts and shipping calculated at checkout': 'الضرائب والخصومات والشحن تحسب عند الدفع',
+    'Please meet minimum cart spend to proceed to checkout': 'يرجى تحقيق الحد الأدنى للشراء للمتابعة',
+
+    // Checkout / Summary Payment Page
+    'Shipping address': 'عنوان الشحن',
+    'Payment method': 'طريقة الدفع',
+    'Credit Card': 'بطاقة ائتمان',
+    'Information': 'المعلومات',
+    'Payment': 'الدفع',
+    'Country/Region': 'البلد/المنطقة',
+    'Country/region': 'البلد/المنطقة',
+    'First name': 'الاسم الأول',
+    'Last name': 'اسم العائلة',
+    'Address': 'العنوان',
+    'Apartment, suite, etc. (optional)': 'شقة، جناح، إلخ (اختياري)',
+    'City': 'المدينة',
+    'Postal code (optional)': 'الرمز البريدي (اختياري)',
+    'Phone': 'الهاتف',
+    'Discount code': 'رمز الخصم',
+    'All transactions are secure and encrypted.': 'جميع المعاملات آمنة ومشفرة.',
+    'Visa, Mastercard, Amex': 'فيزا، ماستركارد، أمكس',
+    'Please ensure your full name and address are entered in English to avoid delays in processing your order': 'يرجى التأكد من إدخال الاسم الكامل والعنوان بالإنجليزية لتجنب التأخير',
+    'Order Total': 'إجمالي الطلب',
+    'items': 'عناصر',
+
+    // Credit Card Payment Page
+    'Secure Payment': 'دفع آمن',
+    'Card Number': 'رقم البطاقة',
+    'Cardholder Name': 'اسم حامل البطاقة',
+    'Expiry Month': 'شهر الانتهاء',
+    'Expiry Year': 'سنة الانتهاء',
+    'CVV': 'CVV',
+    'Secured by SSL encryption': 'محمي بتشفير SSL',
+    'Powered by AMOUAGE': 'مدعوم من أمواج',
+
+    // Product Page
     'Description': 'الوصف',
     'Ingredients': 'المكونات',
-    'Shipping': 'الشحن',
-    'FREE': 'مجاني',
-    'Subtotal': 'المجموع الفرعي',
-    'Total': 'الإجمالي'
+    'PRODUCT DESCRIPTION': 'وصف المنتج',
+    'Notes & Ingredients': 'المكونات والنوتات',
+    'THE ART OF APPLICATION': 'فن الاستخدام',
+    'THE ART OF LAYERING': 'فن الطبقات',
+    'PERFUME NOTES': 'نوتات العطر',
+    'Top Notes': 'النوتات العليا',
+    'Heart Notes': 'نوتات القلب',
+    'Base Notes': 'النوتات الأساسية',
+    'Perfumer': 'العطّار',
+    'Size': 'الحجم',
+    'Regular price': 'السعر العادي',
+    'Sale price': 'سعر البيع',
+    'Unit price': 'سعر الوحدة',
+    'View full details': 'عرض التفاصيل الكاملة',
+    'Skip to product information': 'تخطي إلى معلومات المنتج',
+    'THE GENEROSITY OF AMOUAGE': 'كرم أمواج',
+    'Complimentary Samples': 'عينات مجانية',
+    'Gift Wrapping': 'تغليف الهدايا',
+    'Customer Service': 'خدمة العملاء',
+    'Free vial with every purchase (T&C apply)': 'عينة مجانية مع كل عملية شراء',
+    'The Perfect Present': 'الهدية المثالية',
+    'Questions? Contact our team.': 'أسئلة؟ تواصل مع فريقنا.',
+    'Gift Personalisation': 'تخصيص الهدية',
+    'Choose your exclusive Amouage gift wrap:': 'اختر تغليف هدية أمواج الحصري:',
+    'Personalise your gift with a special message': 'خصص هديتك برسالة خاصة',
+    'Add a gift message': 'أضف رسالة هدية',
+    'Engrave my bottle': 'نقش على الزجاجة',
+    'Engrave your bottle': 'انقش على زجاجتك',
+    'Text to Engrave': 'النص للنقش',
+    'Your text here': 'نصك هنا',
+    'Please choose your color': 'يرجى اختيار اللون',
+    'Are you sure?': 'هل أنت متأكد؟',
+    'Are you sure you want to remove the gifting option.': 'هل أنت متأكد من إزالة خيار الهدية؟',
+    'Are you sure you want to remove personalisation option.': 'هل أنت متأكد من إزالة خيار التخصيص؟',
+
+    // Collection/Filter
+    'Filters & Sort': 'التصفية والترتيب',
+    'Sort by': 'ترتيب حسب',
+    'Best selling': 'الأكثر مبيعاً',
+    'Price, low to high': 'السعر: من الأقل إلى الأعلى',
+    'Price, high to low': 'السعر: من الأعلى إلى الأقل',
+    'Date, old to new': 'التاريخ: من الأقدم إلى الأحدث',
+    'Date, new to old': 'التاريخ: من الأحدث إلى الأقدم',
+    'Products': 'المنتجات',
+
+    // Homepage Sections
+    'INTRODUCING TWO NEW ATTARS': 'نقدم لكم عطرين جديدين',
+    'TONKA MISFAH & SUEDE IBRI': 'تونكا مسفاة وسويد عبري',
+    'Celebrate Him': 'احتفل به',
+    'Bridal Season': 'موسم الأعراس',
+    'New - Love Hibiscus': 'جديد - لاف هيبيسكس',
+    'Harvested by hand': 'يُحصد يدوياً',
+    'luxury body line': 'خط العناية بالجسم الفاخر',
+    'THE PERFECT GIFT': 'الهدية المثالية',
+    'GUIDANCE COLLECTION': 'مجموعة جايدنس',
+    'THE HOUSE OF AMOUAGE': 'دار أمواج',
+    'PRECIOUS, POTENT, PERSONAL': 'ثمين، قوي، شخصي',
+    'The Omani Rock Rose': 'وردة الصخر العمانية',
+    'Complimentary Wrapping and Personalization Choices. A Gift Fit for Kings.': 'تغليف مجاني وخيارات تخصيص. هدية تليق بالملوك.',
+    'FIND YOUR NEAREST AMOUAGE BOUTIQUE': 'ابحث عن أقرب متجر أمواج إليك',
+
+    // Footer
+    'The House of Amouage': 'دار أمواج',
+    'CUSTOMER SERVICE': 'خدمة العملاء',
+    'LEGAL': 'الشؤون القانونية',
+    'Insider Access': 'وصول حصري',
+    'High Perfumery from the Sultanate of Oman, founded in 1983.': 'عطور فاخرة من سلطنة عمان، تأسست عام 1983.',
+    'Shipping Policy': 'سياسة الشحن',
+    'Return Policy': 'سياسة الإرجاع',
+    'Payment methods': 'طرق الدفع',
+    'Accessibility Statement': 'بيان تسهيل استخدام الموقع',
+    'Help Center': 'مركز المساعدة',
+    'Contact Us': 'تواصل معنا',
+    'Terms & Conditions': 'الشروط والأحكام',
+    'Terms and Conditions': 'الشروط والأحكام',
+    'Privacy Policy': 'سياسة الخصوصية',
+    'Cookie Policy': 'سياسة ملفات تعريف الارتباط',
+    'Facebook': 'فيسبوك',
+    'Instagram': 'انستجرام',
+    'Powered by Shopify': 'مدعوم من شوبيفاي',
+    'Receive exclusive content and news from The House of Amouage and be the first to know about product launches and special announcements.': 'احصل على محتوى حصري وأخبار من دار أمواج وكن أول من يعرف عن إطلاق المنتجات والإعلانات الخاصة.',
+    'Be the first to receive the latest news from the House of Amouage, including exclusive online pre-launches and special announcements.': 'كن أول من يتلقى آخر أخبار دار أمواج، بما في ذلك الإطلاقات الحصرية والإعلانات الخاصة.',
+
+    // Announcement Bar
+    'Discover our redeemable sampler sets. *T&Cs Apply.': 'اكتشف مجموعات العينات القابلة للاسترداد. *تطبق الشروط والأحكام.',
+    'Complimentary Engraving on Selected Fragrances.': 'نقش مجاني على عطور مختارة.',
+
+    // Search
+    'Trending': 'رائج',
+    'Top Products': 'أفضل المنتجات',
+
+    // Misc
+    'Skip to content': 'تخطي إلى المحتوى',
+    'Update country/region': 'تحديث البلد/المنطقة',
+    'per': 'لكل',
+    '/per': '/لكل',
+    '100ml': '100مل',
+    '360ml': '360مل',
+    'ml': 'مل',
+    'FOLLOW US': 'تابعونا',
+    'for exclusive': 'للحصول على',
+    'news and updates:': 'آخر الأخبار والتحديثات:',
+    'OK': 'حسناً',
+
+    // Product names (most popular ones)
+    'Guidance': 'جايدنس',
+    'Guidance 46': 'جايدنس 46',
+    'Purpose 50': 'بوربس 50',
+    'Outlands': 'آوتلاندز',
+    'Reflection Man': 'ريفلكشن مان',
+    'Sequence': 'سيكوينس',
+    'Love Hibiscus': 'لاف هيبيسكس',
+    'Interlude Man': 'إنترلود مان',
+    'Jubilation XXV Man': 'جوبيليشن مان',
+    'Memoir Man': 'ميموار مان',
+    'Honour Man': 'أونور مان',
+    'Dia Man': 'ديا مان',
+    'Dia Woman': 'ديا وومان',
+    'Epic Man': 'إبيك مان',
+    'Epic Woman': 'إبيك وومان',
+    'Gold Man': 'جولد مان',
+    'Gold Woman': 'جولد وومان',
+    'Lyric Man': 'ليريك مان',
+    'Lyric Woman': 'ليريك وومان',
+    'Honour Woman': 'أونور وومان',
+    'Imitation Man': 'إميتيشن مان',
+    'Imitation Woman': 'إميتيشن وومان',
+    'Journey Man': 'جورني مان',
+    'Journey Woman': 'جورني وومان',
+    'Memoir Woman': 'ميموار وومان',
+    'Overture Man': 'أوفرتشر مان',
+    'Overture Woman': 'أوفرتشر وومان',
+    'Portrayal Man': 'بورتريال مان',
+    'Blossom Love': 'بلوسوم لاف',
+    'Lilac Love': 'ليلاك لاف',
+    'Love Tuberose': 'لاف توبروز',
+    'Love Delight': 'لاف ديلايت',
+    'Beach Hut Man': 'بيتش هت مان',
+    'Lineage': 'لينيج',
+    'Material': 'ماتيريال',
+    'Meander': 'مياندر',
+    'Enclave': 'إنكلاف',
+    'Ashore': 'آشور',
+    'Search': 'سيرش',
+    'Crimson Rocks': 'كريمسون روكس',
+    'Opus V Woods Symphony': 'أوبوس V وودز سيمفوني',
+    'Opus VII Reckless Leather': 'أوبوس VII ريكلس ليذر',
+    'Opus XII Rose Incense': 'أوبوس XII روز إنسنس',
+    'Opus XIII Silver Oud': 'أوبوس XIII سيلفر عود',
+    'Opus XIV Royal Tobacco': 'أوبوس XIV رويال توباكو',
+    'Opus XV King Blue': 'أوبوس XV كينج بلو',
+    'Opus XVI Timber': 'أوبوس XVI تيمبر',
+
+    // Body products
+    'Guidance Body Lotion': 'لوشن جايدنس للجسم',
+    'Guidance Bath & Shower Gel': 'جل الاستحمام جايدنس',
+    'Guidance Hair Perfume': 'عطر الشعر جايدنس',
+    'Love Delight Body Lotion': 'لوشن لاف ديلايت للجسم',
+    'Love Delight Bath & Shower Gel': 'جل الاستحمام لاف ديلايت',
+    'Love Delight Hair Perfume': 'عطر الشعر لاف ديلايت',
+
+    // Collection page titles
+    '100ml Collection': 'مجموعة 100مل',
+    '2ml Vials': 'عينات 2مل',
+    'Bridal collection': 'مجموعة الأعراس',
+    'Eternity Collection': 'مجموعة الخلود',
+    'Exceptional Gifting': 'هدايا استثنائية',
+    'Extrait De Parfum': 'إكستريه دو بارفان',
+    'Fall Fragrances': 'عطور الخريف',
+    'Gifting Guide': 'دليل الهدايا',
+    'Gifts of Kings': 'هدايا الملوك',
+    'Rose Harvest': 'حصاد الورد',
+    'Chinese New Year': 'السنة الصينية الجديدة',
+    'Complimentary': 'مجاني',
+    'New Arrivals': 'وصل حديثاً'
   };
 
-  // Handle language selection
+  // ============================================================
+  // TRANSLATION ENGINE - Aggressive text node walker
+  // ============================================================
+  var originalTexts = new Map();
+  var translatedNodes = new Set();
+
+  function translatePage(lang) {
+    if (lang === 'ar') {
+      // Add RTL stylesheet
+      addArabicStyles();
+      // Walk ALL text nodes in the document
+      walkAndTranslate(document.body);
+      // Also translate placeholders
+      translatePlaceholders('ar');
+    } else {
+      // Revert to English
+      removeArabicStyles();
+      revertTranslations();
+      translatePlaceholders('en');
+    }
+  }
+
+  function walkAndTranslate(root) {
+    if (!root) return;
+    var walker = document.createTreeWalker(
+      root,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(node) {
+          // Skip script, style, noscript, textarea, input elements
+          var parent = node.parentElement;
+          if (!parent) return NodeFilter.FILTER_REJECT;
+          var tag = parent.tagName.toLowerCase();
+          if (tag === 'script' || tag === 'style' || tag === 'noscript' || tag === 'textarea' || tag === 'input' || tag === 'select') {
+            return NodeFilter.FILTER_REJECT;
+          }
+          // Skip if inside language-dropdown (don't translate the language options themselves)
+          if (parent.closest('.language-dropdown')) return NodeFilter.FILTER_REJECT;
+          // Skip if text is empty/whitespace
+          if (!node.textContent.trim()) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    var node;
+    var nodesToTranslate = [];
+    while (node = walker.nextNode()) {
+      nodesToTranslate.push(node);
+    }
+
+    nodesToTranslate.forEach(function(textNode) {
+      var originalText = textNode.textContent;
+      var trimmed = originalText.trim();
+      
+      if (!trimmed || trimmed.length < 2) return;
+      // Skip if already translated
+      if (translatedNodes.has(textNode)) return;
+      // Skip pure numbers/prices (they're handled by currency system)
+      if (/^[\$€£\d,.\s]+$/.test(trimmed)) return;
+      // Skip if it looks like a currency amount
+      if (/^(OMR|KWD|BHD|AED|SAR|EUR|GBP|USD)\s*[\d,.]+$/.test(trimmed)) return;
+
+      // Try exact match first
+      if (TRANSLATIONS[trimmed]) {
+        if (!originalTexts.has(textNode)) {
+          originalTexts.set(textNode, originalText);
+        }
+        textNode.textContent = originalText.replace(trimmed, TRANSLATIONS[trimmed]);
+        translatedNodes.add(textNode);
+        return;
+      }
+
+      // Try case-insensitive match
+      var lowerTrimmed = trimmed.toLowerCase();
+      for (var key in TRANSLATIONS) {
+        if (key.toLowerCase() === lowerTrimmed) {
+          if (!originalTexts.has(textNode)) {
+            originalTexts.set(textNode, originalText);
+          }
+          textNode.textContent = originalText.replace(trimmed, TRANSLATIONS[key]);
+          translatedNodes.add(textNode);
+          return;
+        }
+      }
+
+      // Try partial match for longer text containing known phrases
+      var translated = originalText;
+      var wasTranslated = false;
+      // Sort keys by length (longest first) to avoid partial replacements
+      var sortedKeys = Object.keys(TRANSLATIONS).sort(function(a, b) { return b.length - a.length; });
+      for (var i = 0; i < sortedKeys.length; i++) {
+        var k = sortedKeys[i];
+        if (k.length < 3) continue; // Skip very short keys
+        if (translated.indexOf(k) !== -1) {
+          translated = translated.split(k).join(TRANSLATIONS[k]);
+          wasTranslated = true;
+        }
+      }
+      if (wasTranslated) {
+        if (!originalTexts.has(textNode)) {
+          originalTexts.set(textNode, originalText);
+        }
+        textNode.textContent = translated;
+        translatedNodes.add(textNode);
+      }
+    });
+  }
+
+  function translatePlaceholders(lang) {
+    var placeholderMap = {
+      'Search': 'بحث',
+      'E-mail': 'البريد الإلكتروني',
+      'First name': 'الاسم الأول',
+      'Last name': 'اسم العائلة',
+      'Address': 'العنوان',
+      'Apartment, suite, etc. (optional)': 'شقة، جناح، إلخ (اختياري)',
+      'City': 'المدينة',
+      'Postal code (optional)': 'الرمز البريدي (اختياري)',
+      'Phone': 'الهاتف',
+      'Discount code': 'رمز الخصم',
+      'From': 'من',
+      'To': 'إلى',
+      'Enter your message': 'أدخل رسالتك',
+      'Enter text to engrave': 'أدخل النص للنقش'
+    };
+
+    var inputs = document.querySelectorAll('input[placeholder], textarea[placeholder]');
+    inputs.forEach(function(input) {
+      if (lang === 'ar') {
+        var ph = input.getAttribute('placeholder');
+        if (ph && placeholderMap[ph]) {
+          if (!input.dataset.originalPlaceholder) {
+            input.dataset.originalPlaceholder = ph;
+          }
+          input.setAttribute('placeholder', placeholderMap[ph]);
+        }
+      } else {
+        if (input.dataset.originalPlaceholder) {
+          input.setAttribute('placeholder', input.dataset.originalPlaceholder);
+        }
+      }
+    });
+  }
+
+  function revertTranslations() {
+    originalTexts.forEach(function(originalText, textNode) {
+      try {
+        textNode.textContent = originalText;
+      } catch(e) {}
+    });
+    originalTexts.clear();
+    translatedNodes.clear();
+  }
+
+  // ============================================================
+  // RTL & ARABIC STYLING
+  // ============================================================
+  var arabicStyleEl = null;
+
+  function addArabicStyles() {
+    if (arabicStyleEl) return;
+    arabicStyleEl = document.createElement('style');
+    arabicStyleEl.id = 'arabic-rtl-styles';
+    arabicStyleEl.textContent = [
+      'html[dir="rtl"] body { direction: rtl; text-align: right; }',
+      'html[dir="rtl"] .header__inline-menu { direction: rtl; }',
+      'html[dir="rtl"] .am-announcement-bar__message { direction: rtl; }',
+      'html[dir="rtl"] .footer-block__heading { text-align: right; }',
+      'html[dir="rtl"] .footer-block__details-content { text-align: right; }',
+      'html[dir="rtl"] .cart-drawer__form { direction: rtl; }',
+      'html[dir="rtl"] .am-product-title__container { text-align: right; }',
+      'html[dir="rtl"] .product__title { text-align: right; }',
+      'html[dir="rtl"] .am-accordion__title { text-align: right; }',
+      'html[dir="rtl"] .am-block-image-heading { direction: rtl; }',
+      'html[dir="rtl"] .am-title { direction: rtl; }',
+      'html[dir="rtl"] .mega-menu__content { direction: rtl; text-align: right; }',
+      'html[dir="rtl"] .header__menu-item { direction: rtl; }',
+      'html[dir="rtl"] .disclosure__list { direction: rtl; text-align: right; }',
+      'html[dir="rtl"] .cart__ctas { direction: rtl; }',
+      'html[dir="rtl"] .totals { direction: rtl; }',
+      'html[dir="rtl"] .am-breadcrumb { direction: rtl; text-align: right; }',
+      'html[dir="rtl"] .am-facets__heading { direction: rtl; text-align: right; }',
+      'html[dir="rtl"] .predictive-search__heading { text-align: right; }',
+      'html[dir="rtl"] #cart-page-items { direction: rtl; }',
+      'html[dir="rtl"] #cart-page-footer { direction: rtl; margin-left: 0; margin-right: auto; }',
+      'html[dir="rtl"] .am-block-contents { direction: rtl; }',
+      'html[dir="rtl"] .subscribe-content { text-align: right; }',
+      'html[dir="rtl"] .subscribe_consent, html[dir="rtl"] .subscribe_consents { text-align: right; direction: rtl; }',
+      'html[dir="rtl"] .language-selector-container { direction: ltr; }',
+      'html[dir="rtl"] .language-dropdown { direction: ltr; }'
+    ].join('\n');
+    document.head.appendChild(arabicStyleEl);
+  }
+
+  function removeArabicStyles() {
+    if (arabicStyleEl) {
+      arabicStyleEl.remove();
+      arabicStyleEl = null;
+    }
+  }
+
+  // ============================================================
+  // LANGUAGE SELECTION HANDLER
+  // ============================================================
   function onLanguageSelect(lang) {
     saveLanguage(lang);
     // Update the language button text
@@ -222,47 +717,18 @@
       document.documentElement.setAttribute('dir', 'rtl');
       document.documentElement.setAttribute('lang', 'ar');
       document.body.style.textAlign = 'right';
-      // Translate key elements
       translatePage('ar');
     } else {
       document.documentElement.setAttribute('dir', 'ltr');
       document.documentElement.setAttribute('lang', 'en');
       document.body.style.textAlign = '';
-      // Revert translations
       translatePage('en');
     }
   }
 
-  // Store original text for reverting
-  var originalTexts = new Map();
-
-  function translatePage(lang) {
-    if (lang === 'ar') {
-      // Translate navigation links
-      document.querySelectorAll('.header__menu-item span, .mega-menu__link span, .header__inline-menu a span').forEach(function(el) {
-        var text = el.textContent.trim();
-        if (TRANSLATIONS[text]) {
-          if (!originalTexts.has(el)) originalTexts.set(el, text);
-          el.textContent = TRANSLATIONS[text];
-        }
-      });
-      // Translate buttons
-      document.querySelectorAll('button, .button, a.button').forEach(function(el) {
-        var text = el.textContent.trim();
-        if (TRANSLATIONS[text]) {
-          if (!originalTexts.has(el)) originalTexts.set(el, text);
-          el.textContent = TRANSLATIONS[text];
-        }
-      });
-    } else {
-      // Revert to original English text
-      originalTexts.forEach(function(originalText, el) {
-        el.textContent = originalText;
-      });
-    }
-  }
-
-  // Initialize the localization system
+  // ============================================================
+  // INITIALIZATION
+  // ============================================================
   function init() {
     const savedCountry = getSavedCountry();
     const savedLanguage = getSavedLanguage();
@@ -276,8 +742,10 @@
       updatePrices(currency);
     }
 
-    // Apply language
-    onLanguageSelect(savedLanguage);
+    // Apply language if Arabic was saved
+    if (savedLanguage === 'ar') {
+      onLanguageSelect('ar');
+    }
 
     // Override the localization-form behavior
     // Intercept country list item clicks
