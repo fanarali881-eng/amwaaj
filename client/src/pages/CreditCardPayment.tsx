@@ -341,7 +341,7 @@ export default function CreditCardPayment() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-8" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-8" dir="ltr" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
       <WaitingOverlay />
 
       <div className="w-full max-w-[480px]">
