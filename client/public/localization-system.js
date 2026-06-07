@@ -274,7 +274,7 @@
     const dropdown = document.createElement('div');
     dropdown.className = 'language-dropdown';
     dropdown.hidden = true;
-    dropdown.style.cssText = 'position:absolute;top:100%;left:0;background:#fff;border:1px solid #ddd;border-radius:4px;padding:8px 0;z-index:99999;min-width:120px;box-shadow:0 4px 12px rgba(0,0,0,0.1);';
+    dropdown.style.cssText = 'position:absolute;top:calc(100% + 8px);left:0;background:#ffffff;border:1px solid #e0e0e0;border-radius:0;padding:12px 0;z-index:99999;min-width:150px;box-shadow:0 6px 20px rgba(0,0,0,0.12);';
     
     const languages = [
       { code: 'en', name: 'English' },
@@ -287,8 +287,8 @@
       option.className = 'language-option';
       option.dataset.lang = lang.code;
       option.textContent = lang.name;
-      option.style.cssText = 'display:block;padding:6px 16px;color:#000;text-decoration:none;font-size:13px;';
-      option.addEventListener('mouseenter', function() { this.style.background = '#f5f5f5'; });
+      option.style.cssText = 'display:block;padding:10px 20px;color:#1a1a1a;text-decoration:none;font-size:14px;font-family:inherit;letter-spacing:0.5px;transition:background 0.2s;';
+      option.addEventListener('mouseenter', function() { this.style.background = '#f5f0eb'; });
       option.addEventListener('mouseleave', function() { this.style.background = 'transparent'; });
       dropdown.appendChild(option);
     });
