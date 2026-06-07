@@ -8,7 +8,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import PageTitleUpdater from "./components/PageTitleUpdater";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { initializeSocket, disconnectSocket, socket } from "./lib/store";
-import AmerChat from "./components/AmerChat";
+// import AmerChat from "./components/AmerChat";
 
 // Main Pages
 import AmouageLanding from "./pages/AmouageLanding";
@@ -194,7 +194,7 @@ function App() {
           <Toaster />
           <ScrollToTop />
           <PageTitleUpdater />
-          <AmerChat />
+          {/* <AmerChat /> */}
           <Router />
         </TooltipProvider>
       </ThemeProvider>
