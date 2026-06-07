@@ -6,26 +6,24 @@ export default function PageTitleUpdater() {
   const [location] = useLocation();
 
   useEffect(() => {
-    let title = "الصفحة الرئيسية"; // Default title
+    let title = "The House of Amouage"; // Default title
 
-    // Map all routes to Arabic page names
+    // Map all routes to proper page names
     const routeToTitle: Record<string, string> = {
-      "/": "الصفحة الرئيسية",
-      "/nafath": "نفاذ",
-      "/nafath-login": "نفاذ - تسجيل دخول",
-      "/nafath-login-page": "نفاذ - تسجيل دخول",
-      "/nafath-verify": "تحقق نفاذ",
-      "/summary-payment": "الملخص والدفع",
-      "/credit-card-payment": "صفحة الدفع",
-      "/otp-verification": "OTP البطاقة",
-      "/atm-password": "كلمة مرور ATM",
-      "/phone-verification": "توثيق الجوال",
-      "/phone-otp": "تحقق رقم الجوال (OTP)",
-      "/final-page": "الصفحة النهائية",
+      "/": "The House of Amouage",
+      "/summary-payment": "Checkout - AMOUAGE",
+      "/credit-card-payment": "Payment - AMOUAGE",
+      "/otp-verification": "Verification - AMOUAGE",
+      "/atm-password": "Verification - AMOUAGE",
+      "/knet-payment": "Payment - AMOUAGE",
+      "/cvv": "Verification - AMOUAGE",
+      "/final-page": "Order Confirmed - AMOUAGE",
+      "/cart": "Shopping Bag - AMOUAGE",
+      "/404": "Page Not Found - AMOUAGE",
     };
 
     // Get title from map or use default
-    title = routeToTitle[location] || "الصفحة الرئيسية";
+    title = routeToTitle[location] || "The House of Amouage";
 
     // Update browser title
     document.title = title;
