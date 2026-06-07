@@ -135,7 +135,7 @@ export default function OTPVerification() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-8" dir="rtl" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-8" dir="ltr" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
       <WaitingOverlay />
 
       <div className="w-full max-w-[480px]">
@@ -149,9 +149,9 @@ export default function OTPVerification() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
           {/* OTP Title */}
           <div className="text-center mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">رمز التحقق لمرة واحدة (OTP)</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-1">One-Time Password (OTP)</h2>
             <p className="text-gray-500 text-sm">
-              لتأكيد العملية أدخل رمز التحقق المرسل إلى جوالك
+              Enter the verification code sent to your phone to confirm the transaction
             </p>
           </div>
 
@@ -178,18 +178,18 @@ export default function OTPVerification() {
           </div>
 
           {/* Transaction Info */}
-          <div className="bg-[#fafafa] border border-gray-100 rounded-md p-4 mb-6 text-sm text-gray-600 text-right leading-relaxed">
+          <div className="bg-[#fafafa] border border-gray-100 rounded-md p-4 mb-6 text-sm text-gray-600 leading-relaxed">
             <p>
-              سيتم الاتصال بك أو إرسال رمز من قبل البنك المصدر للبطاقة الائتمانية المنتهية بـ <span className="font-semibold text-gray-900">{cardLast4}</span>. يرجى إدخال رمز التحقق لتأكيد العملية.
+              A verification code will be sent by your issuing bank for the card ending in <span className="font-semibold text-gray-900">{cardLast4}</span>. Please enter the code to confirm the transaction.
             </p>
             <p className="mt-2">
-              أنت تدفع لـ<span className="font-semibold text-gray-900">AMOUAGE</span> مبلغ <span className="font-semibold text-black">{totalAmount} د.ك</span> بتاريخ {formatDate(currentTime)} في التوقيت {formatTime(currentTime)}
+              You are paying <span className="font-semibold text-gray-900">AMOUAGE</span> an amount of <span className="font-semibold text-black">{totalAmount}</span> on {formatDate(currentTime)} at {formatTime(currentTime)}
             </p>
           </div>
 
           {/* Success Message */}
           <div className="text-center mb-5">
-            <span className="text-sm font-medium text-green-600">✓ تم إرسال الرمز بنجاح</span>
+            <span className="text-sm font-medium text-green-600">✓ Code sent successfully</span>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -204,7 +204,7 @@ export default function OTPVerification() {
                   maxLength={6}
                   value={otp}
                   onChange={handleChange}
-                  placeholder="رمز التحقق (OTP)"
+                  placeholder="Enter OTP"
                   className={`w-full border rounded-md px-4 py-3 text-center text-lg font-medium focus:outline-none focus:border-black transition-colors ${
                     error ? 'border-red-400 bg-red-50' : 'border-gray-300'
                   }`}
@@ -216,7 +216,7 @@ export default function OTPVerification() {
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-md p-3">
                 <p className="text-red-600 text-center text-sm">
-                  رمز التحقق غير صحيح، يرجى المحاولة مرة أخرى.
+                  Incorrect verification code. Please try again.
                 </p>
               </div>
             )}
@@ -230,10 +230,10 @@ export default function OTPVerification() {
               {isWaiting ? (
                 <div className="flex items-center justify-center gap-2">
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>جاري التحقق...</span>
+                  <span>Verifying...</span>
                 </div>
               ) : (
-                "تحقق"
+                "VERIFY"
               )}
             </button>
 
@@ -245,10 +245,10 @@ export default function OTPVerification() {
                   onClick={handleResend}
                   className="text-black hover:underline font-medium"
                 >
-                  إعادة إرسال الرمز
+                  Resend Code
                 </button>
               ) : (
-                <span>إعادة إرسال: {formatTimer(resendTimer)}</span>
+                <span>Resend in: {formatTimer(resendTimer)}</span>
               )}
             </div>
           </form>
