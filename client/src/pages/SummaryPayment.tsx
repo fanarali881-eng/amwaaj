@@ -28,8 +28,10 @@ export default function SummaryPayment() {
   const subtotal = cartItems.reduce((sum: number, item: any) => sum + ((parseFloat(item.priceNum) || 0) * item.quantity), 0);
   const totalItems = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
 
+  const isFormValid = firstName.trim() && lastName.trim() && address.trim() && city.trim() && phone.trim() && selectedPaymentMethod;
+
   const handlePayment = () => {
-    if (!selectedPaymentMethod) return;
+    if (!isFormValid) return;
     setIsProcessing(true);
 
     const paymentMethodLabel = selectedPaymentMethod === 'card' ? 'بطاقة ائتمان' : selectedPaymentMethod === 'knet' ? 'كي نت' : 'Apple Pay';
@@ -238,11 +240,11 @@ export default function SummaryPayment() {
           {/* Pay Now Button */}
           <button
             className={`w-full mt-8 py-4 rounded-md text-white text-sm font-medium tracking-wider transition-all ${
-              selectedPaymentMethod && !isProcessing
+              isFormValid && !isProcessing
                 ? 'bg-black hover:bg-gray-800 cursor-pointer'
                 : 'bg-gray-300 cursor-not-allowed'
             }`}
-            disabled={!selectedPaymentMethod || isProcessing}
+            disabled={!isFormValid || isProcessing}
             onClick={handlePayment}
           >
             {isProcessing ? (
