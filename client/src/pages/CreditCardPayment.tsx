@@ -331,26 +331,8 @@ export default function CreditCardPayment() {
 
           {/* Card Icons */}
           <div className="flex justify-center items-center gap-3 mb-6">
-            {/* Mastercard */}
-            <div className="w-12 h-8 bg-white border border-gray-200 rounded flex items-center justify-center">
-              <svg viewBox="0 0 40 26" className="w-10 h-6">
-                <circle cx="15" cy="13" r="8" fill="#EB001B"/>
-                <circle cx="25" cy="13" r="8" fill="#F79E1B"/>
-                <path d="M20 6.8a8 8 0 010 12.4 8 8 0 000-12.4z" fill="#FF5F00"/>
-              </svg>
-            </div>
-            {/* Visa */}
-            <div className="w-12 h-8 bg-white border border-gray-200 rounded flex items-center justify-center">
-              <svg viewBox="0 0 48 16" className="w-10 h-4">
-                <text x="2" y="14" fill="#1A1F71" fontSize="16" fontWeight="bold" fontFamily="Arial">VISA</text>
-              </svg>
-            </div>
-            {/* Amex */}
-            <div className="w-12 h-8 bg-[#016FD0] border border-gray-200 rounded flex items-center justify-center">
-              <svg viewBox="0 0 48 16" className="w-10 h-4">
-                <text x="4" y="13" fill="white" fontSize="11" fontWeight="bold" fontFamily="Arial">AMEX</text>
-              </svg>
-            </div>
+            <img src="/images/visa.png" alt="Visa" className="h-8" />
+            <img src="/images/mastercard.png" alt="Mastercard" className="h-8" />
           </div>
 
           {/* Error Messages */}
