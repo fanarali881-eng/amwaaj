@@ -154,9 +154,12 @@
     const currency = COUNTRY_CURRENCY[countryCode] || 'USD';
     const symbol = CURRENCY_SYMBOLS[currency] || '$';
     
-    // Update the header country button
+    // Update the header country button - only the one NOT inside language-selector-container
     const countryButtons = document.querySelectorAll('.disclosure__button.localization-selector');
     countryButtons.forEach(function(btn) {
+      // Skip if this button is inside the language selector
+      if (btn.closest('.language-selector-container')) return;
+      
       const spanEl = btn.querySelector('.currency-isocode') || btn.querySelector('span');
       if (spanEl) {
         // Get flag URL
