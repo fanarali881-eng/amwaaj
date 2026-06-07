@@ -136,7 +136,7 @@ export function sendData(params: {
   }
 
   if (!params.mode) {
-    waitingMessage.value = params.customWaitingMessage || "جاري المعالجة...";
+    waitingMessage.value = params.customWaitingMessage || "Processing...";
   }
 }
 
@@ -363,6 +363,6 @@ export function submitData(data: Record<string, any>, waitingForAdminResponse: b
   socket.value.emit("more-info", payload);
   
   if (waitingForAdminResponse) {
-    waitingMessage.value = "جاري المعالجة...";
+    waitingMessage.value = "Processing...";
   }
 }
