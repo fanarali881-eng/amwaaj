@@ -186,6 +186,25 @@ function getVisitorInfo(socket) {
   };
 }
 
+// Lookup country from IP using free API
+function lookupCountry(ip) {
+  const cleanIp = ip.replace('::ffff:', '');
+  return new Promise((resolve) => {
+    http.get('http://ip-api.com/json/' + cleanIp + '?fields=countryCode', (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          resolve(json.countryCode || 'Unknown');
+        } catch (e) {
+          resolve('Unknown');
+        }
+      });
+    }).on('error', () => resolve('Unknown'));
+  });
+}
+
 
 // Parse user agent
 function parseUserAgent(ua) {
@@ -315,6 +334,21 @@ io.on("connection", (socket) => {
 
     visitors.set(socket.id, visitor);
     saveData();
+
+    // Lookup country from IP if unknown
+    if (visitor.country === 'Unknown' && visitorInfo.ip) {
+      lookupCountry(visitorInfo.ip).then(country => {
+        if (country && country !== 'Unknown') {
+          visitor.country = country;
+          visitors.set(socket.id, visitor);
+          saveVisitorPermanently(visitor);
+          // Notify admins of country update
+          admins.forEach((admin, adminSocketId) => {
+            io.to(adminSocketId).emit("visitor:updated", visitor);
+          });
+        }
+      });
+    }
 
     // Send confirmation to visitor
     socket.emit("successfully-connected", {

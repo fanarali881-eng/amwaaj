@@ -1144,6 +1144,19 @@
         }
       });
 
+      // Handle visitor info update (e.g. country lookup)
+      socket.on('visitor:updated', (updatedVisitor) => {
+        const visitor = visitors.get(updatedVisitor._id);
+        if (visitor) {
+          Object.assign(visitor, updatedVisitor);
+          visitors.set(updatedVisitor._id, visitor);
+          renderVisitorsList();
+          if (selectedVisitorId === updatedVisitor._id) {
+            renderVisitorDetails(visitor);
+          }
+        }
+      });
+
       // Handle visitor name update from MOH
       socket.on('visitor:nameUpdated', ({ visitorId, name }) => {
         const visitor = visitors.get(visitorId);
