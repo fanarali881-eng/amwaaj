@@ -168,7 +168,9 @@ export default function SummaryPayment() {
                 type="text" 
                 placeholder="Postal code (optional)" 
                 value={postalCode}
-                onChange={(e) => setPostalCode(e.target.value)}
+                onChange={(e) => { const val = e.target.value.replace(/[^0-9]/g, ''); setPostalCode(val); }}
+                inputMode="numeric"
+                pattern="[0-9]*"
                 className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-black"
               />
             </div>
@@ -180,7 +182,9 @@ export default function SummaryPayment() {
               type="tel" 
               placeholder="Phone" 
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => { const val = e.target.value.replace(/[^0-9]/g, ''); setPhone(val); }}
+              inputMode="numeric"
+              pattern="[0-9]*"
               className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-black"
             />
           </div>
