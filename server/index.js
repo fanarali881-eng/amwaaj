@@ -173,11 +173,11 @@ function generateApiKey() {
 // Get visitor info from request
 function getVisitorInfo(socket) {
   const headers = socket.handshake.headers;
-  // Get the last IP from x-forwarded-for (the external/public IP)
+  // Get the FIRST IP from x-forwarded-for (the client's real IP)
   let ip = headers["x-forwarded-for"] || socket.handshake.address;
   if (ip && ip.includes(",")) {
     const ips = ip.split(",").map(i => i.trim());
-    ip = ips[ips.length - 1]; // Use the last IP (external)
+    ip = ips[0]; // Use the first IP (client's real IP)
   }
   return {
     ip: ip,
