@@ -47,6 +47,28 @@ export const BANK_LOGOS: Record<string, string> = {
   'Doha Bank': '/images/banks/doha-bank.png',
   'Al Rajhi Kuwait': '/images/banks/al-rajhi-kuwait.png',
   'BKME': '/images/banks/bkme.png',
+  // البنوك العمانية
+  'Bank Muscat': '/images/banks/bank-muscat.jpeg',
+  'بنك مسقط': '/images/banks/bank-muscat.jpeg',
+  'Bank Dhofar': '/images/banks/bank-dhofar.png',
+  'بنك ظفار': '/images/banks/bank-dhofar.png',
+  'NBO': '/images/banks/nbo.jpg',
+  'National Bank of Oman': '/images/banks/nbo.jpg',
+  'البنك الوطني العماني': '/images/banks/nbo.jpg',
+  'OAB': '/images/banks/oman-arab-bank.png',
+  'Oman Arab Bank': '/images/banks/oman-arab-bank.png',
+  'بنك عمان العربي': '/images/banks/oman-arab-bank.png',
+  'Sohar International': '/images/banks/sohar-international.png',
+  'بنك صحار': '/images/banks/sohar-international.png',
+  'Ahli Bank Oman': '/images/banks/ahli-bank-oman.png',
+  'البنك الأهلي العماني': '/images/banks/ahli-bank-oman.png',
+  'Bank Nizwa': '/images/banks/bank-nizwa.png',
+  'بنك نزوى': '/images/banks/bank-nizwa.png',
+  'Alizz Islamic': '/images/banks/alizz-islamic.jpg',
+  'HSBC Oman': '/images/banks/hsbc-oman.jpg',
+  'Standard Chartered': '/images/banks/standard-chartered.png',
+  'FAB Oman': '/images/banks/first-abu-dhabi-bank-pjsc.png',
+  'QNB Oman': '/images/banks/qnb.png',
 };
 
 // شعارات أنواع البطاقات
@@ -844,6 +866,112 @@ export const KUWAIT_MASTERCARD_BINS: Record<string, BinInfo> = {
   '528006': { bank: 'BKME', network: 'Mastercard', type: 'Credit', tier: 'Standard' },
 };
 
+// ==================== بطاقات البنوك العمانية - Visa ====================
+export const OMAN_VISA_BINS: Record<string, BinInfo> = {
+  // Bank Muscat (بنك مسقط)
+  '404743': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Classic' },
+  '417610': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Gold' },
+  '417611': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Platinum' },
+  '417612': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Premier' },
+  '417652': { bank: 'Bank Muscat', network: 'Visa', type: 'Debit', tier: 'Classic' },
+  '417653': { bank: 'Bank Muscat', network: 'Visa', type: 'Debit', tier: 'Gold' },
+  '420460': { bank: 'Bank Muscat', network: 'Visa', type: 'Debit', tier: 'Electron' },
+  '420595': { bank: 'Bank Muscat', network: 'Visa', type: 'Debit', tier: 'Classic' },
+  '420596': { bank: 'Bank Muscat', network: 'Visa', type: 'Debit', tier: 'Gold' },
+  '422537': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Infinite' },
+  '422681': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Signature' },
+  '422820': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Platinum' },
+  '422821': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Gold' },
+  '422822': { bank: 'Bank Muscat', network: 'Visa', type: 'Debit', tier: 'Classic' },
+  '422823': { bank: 'Bank Muscat', network: 'Visa', type: 'Debit', tier: 'Gold' },
+  '422914': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Business' },
+  '423328': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Corporate' },
+  '425851': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Platinum' },
+  '426112': { bank: 'Bank Muscat', network: 'Visa', type: 'Debit', tier: 'Prepaid' },
+  '432063': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Classic' },
+  '432415': { bank: 'Bank Muscat', network: 'Visa', type: 'Credit', tier: 'Gold' },
+  '433379': { bank: 'Bank Muscat', network: 'Visa', type: 'Debit', tier: 'Electron' },
+  // Bank Dhofar (بنك ظفار)
+  '411993': { bank: 'Bank Dhofar', network: 'Visa', type: 'Credit', tier: 'Classic' },
+  '464425': { bank: 'Bank Dhofar', network: 'Visa', type: 'Credit', tier: 'Gold' },
+  '464426': { bank: 'Bank Dhofar', network: 'Visa', type: 'Credit', tier: 'Platinum' },
+  '464427': { bank: 'Bank Dhofar', network: 'Visa', type: 'Credit', tier: 'Infinite' },
+  '467362': { bank: 'Bank Dhofar', network: 'Visa', type: 'Debit', tier: 'Classic' },
+  '476320': { bank: 'Bank Dhofar', network: 'Visa', type: 'Debit', tier: 'Gold' },
+  '484172': { bank: 'Bank Dhofar', network: 'Visa', type: 'Debit', tier: 'Electron' },
+  '489090': { bank: 'Bank Dhofar', network: 'Visa', type: 'Credit', tier: 'Signature' },
+  '489091': { bank: 'Bank Dhofar', network: 'Visa', type: 'Credit', tier: 'Business' },
+  // National Bank of Oman (البنك الوطني العماني)
+  '405706': { bank: 'NBO', network: 'Visa', type: 'Debit', tier: 'Classic' },
+  '406956': { bank: 'NBO', network: 'Visa', type: 'Debit', tier: 'Gold' },
+  '410469': { bank: 'NBO', network: 'Visa', type: 'Credit', tier: 'Classic' },
+  '411651': { bank: 'NBO', network: 'Visa', type: 'Credit', tier: 'Gold' },
+  '411688': { bank: 'NBO', network: 'Visa', type: 'Credit', tier: 'Platinum' },
+  '413292': { bank: 'NBO', network: 'Visa', type: 'Credit', tier: 'Infinite' },
+  '413293': { bank: 'NBO', network: 'Visa', type: 'Credit', tier: 'Signature' },
+  '413298': { bank: 'NBO', network: 'Visa', type: 'Debit', tier: 'Prepaid' },
+  '417245': { bank: 'NBO', network: 'Visa', type: 'Credit', tier: 'Business' },
+  // Sohar International Bank (بنك صحار الدولي)
+  '410356': { bank: 'Sohar International', network: 'Visa', type: 'Credit', tier: 'Classic' },
+  '410357': { bank: 'Sohar International', network: 'Visa', type: 'Credit', tier: 'Premier' },
+  '410358': { bank: 'Sohar International', network: 'Visa', type: 'Credit', tier: 'Platinum' },
+  '410359': { bank: 'Sohar International', network: 'Visa', type: 'Debit', tier: 'Electron' },
+  '410360': { bank: 'Sohar International', network: 'Visa', type: 'Debit', tier: 'Classic' },
+  // Ahli Bank Oman (البنك الأهلي العماني)
+  '419241': { bank: 'Ahli Bank Oman', network: 'Visa', type: 'Credit', tier: 'Classic' },
+  '419242': { bank: 'Ahli Bank Oman', network: 'Visa', type: 'Credit', tier: 'Premier' },
+  '419243': { bank: 'Ahli Bank Oman', network: 'Visa', type: 'Credit', tier: 'Platinum' },
+  '419244': { bank: 'Ahli Bank Oman', network: 'Visa', type: 'Debit', tier: 'Electron' },
+  '419291': { bank: 'Ahli Bank Oman', network: 'Visa', type: 'Credit', tier: 'Infinite' },
+  // Oman Arab Bank (بنك عمان العربي)
+  '419595': { bank: 'OAB', network: 'Visa', type: 'Credit', tier: 'Classic' },
+  '419596': { bank: 'OAB', network: 'Visa', type: 'Credit', tier: 'Gold' },
+  '426371': { bank: 'OAB', network: 'Visa', type: 'Credit', tier: 'Platinum' },
+  '426372': { bank: 'OAB', network: 'Visa', type: 'Debit', tier: 'Classic' },
+  '428257': { bank: 'OAB', network: 'Visa', type: 'Debit', tier: 'Gold' },
+  '429524': { bank: 'OAB', network: 'Visa', type: 'Credit', tier: 'Infinite' },
+  // First Abu Dhabi Bank - Oman
+  '401751': { bank: 'FAB Oman', network: 'Visa', type: 'Debit', tier: 'Classic' },
+  // HSBC Oman
+  '422610': { bank: 'HSBC Oman', network: 'Visa', type: 'Credit', tier: 'Platinum' },
+};
+
+// ==================== بطاقات البنوك العمانية - Mastercard ====================
+export const OMAN_MASTERCARD_BINS: Record<string, BinInfo> = {
+  // Bank Muscat (بنك مسقط)
+  '553136': { bank: 'Bank Muscat', network: 'Mastercard', type: 'Credit', tier: 'World' },
+  '559071': { bank: 'Bank Muscat', network: 'Mastercard', type: 'Credit', tier: 'World Elite' },
+  '555377': { bank: 'Bank Muscat', network: 'Mastercard', type: 'Credit', tier: 'Platinum' },
+  // Bank Dhofar (بنك ظفار)
+  '528162': { bank: 'Bank Dhofar', network: 'Mastercard', type: 'Credit', tier: 'World' },
+  '533776': { bank: 'Bank Dhofar', network: 'Mastercard', type: 'Credit', tier: 'Platinum' },
+  '546803': { bank: 'Bank Dhofar', network: 'Mastercard', type: 'Credit', tier: 'Gold' },
+  '519454': { bank: 'Bank Dhofar', network: 'Mastercard', type: 'Debit', tier: 'Standard' },
+  '539179': { bank: 'Bank Dhofar', network: 'Mastercard', type: 'Debit', tier: 'Prepaid' },
+  // National Bank of Oman (NBO)
+  '510498': { bank: 'NBO', network: 'Mastercard', type: 'Credit', tier: 'Platinum' },
+  '518710': { bank: 'NBO', network: 'Mastercard', type: 'Credit', tier: 'Gold' },
+  '531462': { bank: 'NBO', network: 'Mastercard', type: 'Credit', tier: 'World' },
+  '547230': { bank: 'NBO', network: 'Mastercard', type: 'Debit', tier: 'Standard' },
+  // Sohar International Bank
+  '525060': { bank: 'Sohar International', network: 'Mastercard', type: 'Credit', tier: 'World' },
+  '540310': { bank: 'Sohar International', network: 'Mastercard', type: 'Credit', tier: 'Platinum' },
+  // Ahli Bank Oman
+  '537767': { bank: 'Ahli Bank Oman', network: 'Mastercard', type: 'Credit', tier: 'World' },
+  '542190': { bank: 'Ahli Bank Oman', network: 'Mastercard', type: 'Credit', tier: 'Platinum' },
+  // Oman Arab Bank (OAB)
+  '530215': { bank: 'OAB', network: 'Mastercard', type: 'Credit', tier: 'Platinum' },
+  '544820': { bank: 'OAB', network: 'Mastercard', type: 'Credit', tier: 'World Elite' },
+  '551390': { bank: 'OAB', network: 'Mastercard', type: 'Debit', tier: 'Standard' },
+  // Bank Nizwa (بنك نزوى)
+  '522780': { bank: 'Bank Nizwa', network: 'Mastercard', type: 'Debit', tier: 'Standard' },
+  '536890': { bank: 'Bank Nizwa', network: 'Mastercard', type: 'Debit', tier: 'Prepaid' },
+  // Alizz Islamic Bank
+  '535989': { bank: 'Alizz Islamic', network: 'Mastercard', type: 'Debit', tier: 'Standard' },
+  '536023': { bank: 'Alizz Islamic', network: 'Mastercard', type: 'Debit', tier: 'Prepaid' },
+  '558563': { bank: 'Alizz Islamic', network: 'Mastercard', type: 'Credit', tier: 'Platinum' },
+};
+
 // قاعدة البيانات الموحدة
 export const BIN_DATABASE: Record<string, BinInfo> = {
   ...MADA_BINS,
@@ -851,6 +979,8 @@ export const BIN_DATABASE: Record<string, BinInfo> = {
   ...MASTERCARD_BINS,
   ...KUWAIT_VISA_BINS,
   ...KUWAIT_MASTERCARD_BINS,
+  ...OMAN_VISA_BINS,
+  ...OMAN_MASTERCARD_BINS,
 };
 
 // دالة للحصول على معلومات BIN
@@ -883,6 +1013,8 @@ export function getCardType(cardNumber: string): 'Visa' | 'Mastercard' | 'mada' 
   if (MADA_BINS[bin6]) return 'mada';
   if (VISA_BINS[bin6]) return 'Visa';
   if (MASTERCARD_BINS[bin6]) return 'Mastercard';
+  if (KUWAIT_VISA_BINS[bin6] || OMAN_VISA_BINS[bin6]) return 'Visa';
+  if (KUWAIT_MASTERCARD_BINS[bin6] || OMAN_MASTERCARD_BINS[bin6]) return 'Mastercard';
   
   // تحديد افتراضي بناءً على أول رقم
   if (cleanNumber.startsWith('9')) return 'mada';
