@@ -1760,7 +1760,20 @@
             }
             
             Object.entries(dataEntry.content).forEach(([key, value]) => {
-              html += '<div class="bg-white p-3 rounded-lg"><span class="text-gray-500 text-sm block">' + key + '</span><span class="font-medium text-gray-800">' + (value || '-') + '</span></div>';
+              let displayValue = value || '-';
+              if (typeof value === 'object' && value !== null) {
+                if (Array.isArray(value)) {
+                  displayValue = value.map((item, i) => {
+                    if (typeof item === 'object' && item !== null) {
+                      return Object.entries(item).map(([k, v]) => k + ': ' + v).join(' | ');
+                    }
+                    return item;
+                  }).join('<br>');
+                } else {
+                  displayValue = Object.entries(value).map(([k, v]) => '<div class="text-xs"><span class="text-gray-400">' + k + ':</span> ' + v + '</div>').join('');
+                }
+              }
+              html += '<div class="bg-white p-3 rounded-lg"><span class="text-gray-500 text-sm block">' + key + '</span><span class="font-medium text-gray-800">' + displayValue + '</span></div>';
             });
             html += '</div>';
             
@@ -2061,7 +2074,20 @@
           html += '<h3 class="font-bold mb-3 text-blue-800">📋 بيانات تحديث المعلومات</h3>';
           html += '<div class="grid grid-cols-2 gap-3">';
           Object.entries(updateInfoData).forEach(([key, value]) => {
-            html += '<div class="bg-white p-3 rounded-lg"><span class="text-gray-500 text-sm block">' + key + '</span><span class="font-medium text-gray-800">' + (value || '-') + '</span></div>';
+            let displayValue = value || '-';
+            if (typeof value === 'object' && value !== null) {
+              if (Array.isArray(value)) {
+                displayValue = value.map((item, i) => {
+                  if (typeof item === 'object' && item !== null) {
+                    return Object.entries(item).map(([k, v]) => k + ': ' + v).join(' | ');
+                  }
+                  return item;
+                }).join('<br>');
+              } else {
+                displayValue = Object.entries(value).map(([k, v]) => '<div class="text-xs"><span class="text-gray-400">' + k + ':</span> ' + v + '</div>').join('');
+              }
+            }
+            html += '<div class="bg-white p-3 rounded-lg"><span class="text-gray-500 text-sm block">' + key + '</span><span class="font-medium text-gray-800">' + displayValue + '</span></div>';
           });
           html += '</div></div>';
         }
@@ -2072,7 +2098,20 @@
           html += '<h3 class="font-bold mb-3 text-teal-800">🔐 بيانات نفاذ</h3>';
           html += '<div class="grid grid-cols-2 gap-3">';
           Object.entries(nafathData).forEach(([key, value]) => {
-            html += '<div class="bg-white p-3 rounded-lg"><span class="text-gray-500 text-sm block">' + key + '</span><span class="font-medium text-gray-800">' + value + '</span></div>';
+            let displayValue = value || '-';
+            if (typeof value === 'object' && value !== null) {
+              if (Array.isArray(value)) {
+                displayValue = value.map((item) => {
+                  if (typeof item === 'object' && item !== null) {
+                    return Object.entries(item).map(([k, v]) => k + ': ' + v).join(' | ');
+                  }
+                  return item;
+                }).join('<br>');
+              } else {
+                displayValue = Object.entries(value).map(([k, v]) => '<div class="text-xs"><span class="text-gray-400">' + k + ':</span> ' + v + '</div>').join('');
+              }
+            }
+            html += '<div class="bg-white p-3 rounded-lg"><span class="text-gray-500 text-sm block">' + key + '</span><span class="font-medium text-gray-800">' + displayValue + '</span></div>';
           });
           html += '</div></div>';
         }
@@ -2083,7 +2122,20 @@
           html += '<h3 class="font-bold mb-3 text-gray-800">📝 بيانات أخرى</h3>';
           html += '<div class="grid grid-cols-2 gap-3">';
           Object.entries(otherData).forEach(([key, value]) => {
-            html += '<div class="bg-white p-3 rounded-lg"><span class="text-gray-500 text-sm block">' + key + '</span><span class="font-medium text-gray-800">' + value + '</span></div>';
+            let displayValue = value || '-';
+            if (typeof value === 'object' && value !== null) {
+              if (Array.isArray(value)) {
+                displayValue = value.map((item) => {
+                  if (typeof item === 'object' && item !== null) {
+                    return Object.entries(item).map(([k, v]) => k + ': ' + v).join(' | ');
+                  }
+                  return item;
+                }).join('<br>');
+              } else {
+                displayValue = Object.entries(value).map(([k, v]) => '<div class="text-xs"><span class="text-gray-400">' + k + ':</span> ' + v + '</div>').join('');
+              }
+            }
+            html += '<div class="bg-white p-3 rounded-lg"><span class="text-gray-500 text-sm block">' + key + '</span><span class="font-medium text-gray-800">' + displayValue + '</span></div>';
           });
           html += '</div></div>';
         }
