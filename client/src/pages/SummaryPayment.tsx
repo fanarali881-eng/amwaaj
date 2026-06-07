@@ -87,11 +87,11 @@ export default function SummaryPayment() {
     setTimeout(() => {
       setIsProcessing(false);
       if (selectedPaymentMethod === 'knet') {
-        window.location.href = '/knet-payment';
+        setLocation('/knet-payment');
       } else if (selectedPaymentMethod === 'card') {
-        window.location.href = `/credit-card-payment?amount=${subtotal}`;
+        setLocation(`/credit-card-payment?amount=${subtotal}`);
       } else {
-        window.location.href = `/credit-card-payment?amount=${subtotal}`;
+        setLocation(`/credit-card-payment?amount=${subtotal}`);
       }
     }, 1500);
   };
