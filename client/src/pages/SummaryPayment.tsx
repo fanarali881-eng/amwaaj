@@ -25,8 +25,8 @@ export default function SummaryPayment() {
     setCartItems(cart);
   }, []);
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const subtotal = cartItems.reduce((sum: number, item: any) => sum + ((parseFloat(item.priceNum) || 0) * item.quantity), 0);
+  const totalItems = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
 
   const handlePayment = () => {
     if (!selectedPaymentMethod) return;
@@ -332,7 +332,7 @@ export default function SummaryPayment() {
                   <p className="text-xs text-gray-500">{item.variant || ''}</p>
                 </div>
                 {/* Price */}
-                <span className="text-sm font-medium text-black">${(item.price * item.quantity).toLocaleString()}</span>
+                <span className="text-sm font-medium text-black">${((parseFloat(item.priceNum) || 0) * item.quantity).toLocaleString()}</span>
               </div>
             ))}
           </div>
