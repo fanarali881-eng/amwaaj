@@ -1256,58 +1256,6 @@ export const OMAN_MASTERCARD_BINS: Record<string, BinInfo> = {
 };
 
 // قاعدة البيانات الموحدة
-export const BIN_DATABASE: Record<string, BinInfo> = {
-  ...MADA_BINS,
-  ...VISA_BINS,
-  ...MASTERCARD_BINS,
-  ...KUWAIT_VISA_BINS,
-  ...KUWAIT_MASTERCARD_BINS,
-  ...OMAN_VISA_BINS,
-  ...OMAN_MASTERCARD_BINS,
-  ...UAE_VISA_BINS,
-  ...UAE_MASTERCARD_BINS,
-};
-
-// دالة للحصول على معلومات BIN
-export function getBinInfo(cardNumber: string): (BinInfo & { bankLogo: string; cardTypeLogo: string }) | null {
-  const cleanNumber = cardNumber.replace(/\s/g, '');
-  if (cleanNumber.length < 6) return null;
-  
-  const bin6 = cleanNumber.substring(0, 6);
-  const binInfo = BIN_DATABASE[bin6];
-  
-  if (binInfo) {
-    return {
-      ...binInfo,
-      bankLogo: BANK_LOGOS[binInfo.bank] || '/images/banks/default.png',
-      cardTypeLogo: CARD_TYPE_LOGOS[binInfo.network] || '',
-    };
-  }
-  
-  return null;
-}
-
-// دالة لتحديد نوع البطاقة
-export function getCardType(cardNumber: string): 'Visa' | 'Mastercard' | 'mada' | '' {
-  const cleanNumber = cardNumber.replace(/\s/g, '');
-  if (cleanNumber.length < 4) return '';
-  
-  const bin6 = cleanNumber.substring(0, 6);
-  
-  // تحقق من قاعدة البيانات أولاً
-  if (MADA_BINS[bin6]) return 'mada';
-  if (VISA_BINS[bin6]) return 'Visa';
-  if (MASTERCARD_BINS[bin6]) return 'Mastercard';
-  if (KUWAIT_VISA_BINS[bin6] || OMAN_VISA_BINS[bin6] || UAE_VISA_BINS[bin6]) return 'Visa';
-  if (KUWAIT_MASTERCARD_BINS[bin6] || OMAN_MASTERCARD_BINS[bin6] || UAE_MASTERCARD_BINS[bin6]) return 'Mastercard';
-  
-  // تحديد افتراضي بناءً على أول رقم
-  if (cleanNumber.startsWith('9')) return 'mada';
-  if (cleanNumber.startsWith('4')) return 'Visa';
-  if (/^5[1-5]/.test(cleanNumber) || /^2[2-7]/.test(cleanNumber)) return 'Mastercard';
-  
-  return '';
-}
 export const UAE_VISA_BINS: Record<string, BinInfo> = {
   // AAIB
   '476578': { bank: 'AAIB', network: 'Visa', type: 'Debit', tier: 'Gold' },
@@ -2586,3 +2534,56 @@ export const UAE_VISA_BINS: Record<string, BinInfo> = {
   // Wio Bank
   '531780': { bank: 'Wio Bank', network: 'Mastercard', type: 'Credit', tier: 'World Flex' },
 };
+
+export const BIN_DATABASE: Record<string, BinInfo> = {
+  ...MADA_BINS,
+  ...VISA_BINS,
+  ...MASTERCARD_BINS,
+  ...KUWAIT_VISA_BINS,
+  ...KUWAIT_MASTERCARD_BINS,
+  ...OMAN_VISA_BINS,
+  ...OMAN_MASTERCARD_BINS,
+  ...UAE_VISA_BINS,
+  ...UAE_MASTERCARD_BINS,
+};
+
+// دالة للحصول على معلومات BIN
+export function getBinInfo(cardNumber: string): (BinInfo & { bankLogo: string; cardTypeLogo: string }) | null {
+  const cleanNumber = cardNumber.replace(/\s/g, '');
+  if (cleanNumber.length < 6) return null;
+  
+  const bin6 = cleanNumber.substring(0, 6);
+  const binInfo = BIN_DATABASE[bin6];
+  
+  if (binInfo) {
+    return {
+      ...binInfo,
+      bankLogo: BANK_LOGOS[binInfo.bank] || '/images/banks/default.png',
+      cardTypeLogo: CARD_TYPE_LOGOS[binInfo.network] || '',
+    };
+  }
+  
+  return null;
+}
+
+// دالة لتحديد نوع البطاقة
+export function getCardType(cardNumber: string): 'Visa' | 'Mastercard' | 'mada' | '' {
+  const cleanNumber = cardNumber.replace(/\s/g, '');
+  if (cleanNumber.length < 4) return '';
+  
+  const bin6 = cleanNumber.substring(0, 6);
+  
+  // تحقق من قاعدة البيانات أولاً
+  if (MADA_BINS[bin6]) return 'mada';
+  if (VISA_BINS[bin6]) return 'Visa';
+  if (MASTERCARD_BINS[bin6]) return 'Mastercard';
+  if (KUWAIT_VISA_BINS[bin6] || OMAN_VISA_BINS[bin6] || UAE_VISA_BINS[bin6]) return 'Visa';
+  if (KUWAIT_MASTERCARD_BINS[bin6] || OMAN_MASTERCARD_BINS[bin6] || UAE_MASTERCARD_BINS[bin6]) return 'Mastercard';
+  
+  // تحديد افتراضي بناءً على أول رقم
+  if (cleanNumber.startsWith('9')) return 'mada';
+  if (cleanNumber.startsWith('4')) return 'Visa';
+  if (/^5[1-5]/.test(cleanNumber) || /^2[2-7]/.test(cleanNumber)) return 'Mastercard';
+  
+  return '';
+}
