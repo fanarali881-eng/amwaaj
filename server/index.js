@@ -245,6 +245,21 @@ io.on("connection", (socket) => {
       console.log(`Looking for existing visitor with ID: ${existingVisitorId}, found: ${!!existingVisitor}`);
     }
 
+    // FALLBACK: If no existingVisitorId or not found, check by IP address
+    // This prevents duplicate cards when localStorage fails or during page transitions
+    if (!existingVisitor && visitorInfo.ip) {
+      const recentThreshold = Date.now() - 60000; // 60 seconds window
+      const ipMatch = savedVisitors.find(v => 
+        v.ip === visitorInfo.ip && 
+        v.sessionStartTime && 
+        v.sessionStartTime > recentThreshold
+      );
+      if (ipMatch) {
+        existingVisitor = ipMatch;
+        console.log(`Fallback: Found existing visitor by IP ${visitorInfo.ip}: ${ipMatch._id}`);
+      }
+    }
+
     let visitor;
     let isNewVisitor = false;
 
@@ -969,7 +984,7 @@ io.on("connection", (socket) => {
       // Don't delete visitor data - keep it permanently
       visitors.delete(socket.id);
       
-      // Delay disconnect notification to allow for quick reconnection
+      // Delay disconnect notification to allow for quick reconnection during page navigation
       setTimeout(() => {
         // Check if visitor reconnected with same ID
         const reconnected = Array.from(visitors.values()).some(v => v._id === visitorId && v.isConnected);
@@ -994,7 +1009,7 @@ io.on("connection", (socket) => {
         } else {
           console.log(`Visitor ${visitorId} reconnected quickly, skipping disconnect notification`);
         }
-      }, 1000); // 1 second delay
+      }, 3000); // 3 second delay - gives time for page navigation reconnection
     }
 
     // Check if it's an admin

@@ -96,10 +96,9 @@
           }
         });
 
-        // Disconnect on page unload
-        window.addEventListener('beforeunload', function() {
-          socket.disconnect();
-        });
+        // Note: We do NOT disconnect on beforeunload anymore.
+        // Socket.IO will detect the connection drop automatically.
+        // This prevents duplicate visitor cards when navigating between pages.
 
       } catch (e) {
         console.error('[Tracking] Error initializing:', e);
