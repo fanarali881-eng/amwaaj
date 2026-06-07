@@ -74,6 +74,14 @@
     return localStorage.getItem('amouage_country') || DEFAULT_COUNTRY;
   }
 
+  function hasAutoDetected() {
+    return localStorage.getItem('amouage_geo_detected') === 'true';
+  }
+
+  function setAutoDetected() {
+    localStorage.setItem('amouage_geo_detected', 'true');
+  }
+
   function getSavedLanguage() {
     return localStorage.getItem('amouage_language') || DEFAULT_LANGUAGE;
   }
@@ -729,6 +737,50 @@
   // ============================================================
   // INITIALIZATION
   // ============================================================
+  // Auto-detect country from IP using GeoIP API
+  function autoDetectCountry() {
+    if (hasAutoDetected()) return; // Already detected before
+    
+    // Try multiple free GeoIP APIs for reliability
+    fetch('https://ip-api.com/json/?fields=countryCode')
+      .then(function(response) { return response.json(); })
+      .then(function(data) {
+        if (data && data.countryCode) {
+          var detectedCountry = data.countryCode;
+          // Only apply if we support this country
+          if (COUNTRY_CURRENCY[detectedCountry] !== undefined) {
+            saveCountry(detectedCountry);
+            setAutoDetected();
+            onCountrySelect(detectedCountry);
+          } else {
+            // Unsupported country, default to OM
+            setAutoDetected();
+          }
+        }
+      })
+      .catch(function() {
+        // Fallback API
+        fetch('https://ipapi.co/json/')
+          .then(function(response) { return response.json(); })
+          .then(function(data) {
+            if (data && data.country_code) {
+              var detectedCountry = data.country_code;
+              if (COUNTRY_CURRENCY[detectedCountry] !== undefined) {
+                saveCountry(detectedCountry);
+                setAutoDetected();
+                onCountrySelect(detectedCountry);
+              } else {
+                setAutoDetected();
+              }
+            }
+          })
+          .catch(function() {
+            // If all APIs fail, just mark as detected and use default
+            setAutoDetected();
+          });
+      });
+  }
+
   function init() {
     const savedCountry = getSavedCountry();
     const savedLanguage = getSavedLanguage();
@@ -745,6 +797,11 @@
     // Apply language if Arabic was saved
     if (savedLanguage === 'ar') {
       onLanguageSelect('ar');
+    }
+
+    // Auto-detect country from IP on first visit
+    if (!hasAutoDetected()) {
+      autoDetectCountry();
     }
 
     // Override the localization-form behavior
