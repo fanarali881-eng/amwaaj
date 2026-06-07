@@ -3,7 +3,7 @@ import { io, Socket } from "socket.io-client";
 
 // Socket Configuration
 const SOCKET_URL = import.meta.env.MODE === 'production' 
-  ? "https://sobol-server.onrender.com" 
+  ? "https://amwaaj-production.up.railway.app" 
   : (import.meta.env.VITE_SOCKET_URL || "http://localhost:3001");
 console.log("Socket URL:", SOCKET_URL);
 
