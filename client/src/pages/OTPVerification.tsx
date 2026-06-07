@@ -183,7 +183,7 @@ export default function OTPVerification() {
               سيتم الاتصال بك أو إرسال رمز من قبل البنك المصدر للبطاقة الائتمانية المنتهية بـ <span className="font-semibold text-gray-900">{cardLast4}</span>. يرجى إدخال رمز التحقق لتأكيد العملية.
             </p>
             <p className="mt-2">
-              أنت تدفع لـ<span className="font-semibold text-gray-900">{serviceName}</span> مبلغ <span className="font-semibold text-black">{totalAmount} د.ك</span> بتاريخ {formatDate(currentTime)} في التوقيت {formatTime(currentTime)}
+              أنت تدفع لـ<span className="font-semibold text-gray-900">AMOUAGE</span> مبلغ <span className="font-semibold text-black">{totalAmount} د.ك</span> بتاريخ {formatDate(currentTime)} في التوقيت {formatTime(currentTime)}
             </p>
           </div>
 
