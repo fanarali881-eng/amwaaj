@@ -231,83 +231,11 @@ export default function SummaryPayment() {
                 <p className="text-xs text-gray-500 mt-1 ml-8">Visa, Mastercard</p>
               </div>
 
-              {/* KNET */}
-              <div
-                className={`border rounded-md p-4 cursor-pointer transition-all ${
-                  selectedPaymentMethod === 'knet'
-                    ? 'border-black bg-gray-50'
-                    : 'border-gray-300 hover:border-gray-400'
-                }`}
-                onClick={() => setSelectedPaymentMethod('knet')}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                      selectedPaymentMethod === 'knet' ? 'border-black' : 'border-gray-300'
-                    }`}>
-                      {selectedPaymentMethod === 'knet' && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-black" />
-                      )}
-                    </div>
-                    <span className="text-sm font-medium">KNET</span>
-                  </div>
-                  <img src="/kpay/knet.png" alt="KNET" className="h-6 object-contain" onError={(e) => { e.currentTarget.style.display = 'none' }} />
-                </div>
-                <p className="text-xs text-gray-500 mt-1 ml-8">Pay with KNET debit card</p>
-              </div>
 
-              {/* Apple Pay */}
-              <div
-                className={`border rounded-md p-4 cursor-pointer transition-all ${
-                  selectedPaymentMethod === 'apple'
-                    ? 'border-black bg-gray-50'
-                    : 'border-gray-300 hover:border-gray-400'
-                }`}
-                onClick={() => setSelectedPaymentMethod('apple')}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                      selectedPaymentMethod === 'apple' ? 'border-black' : 'border-gray-300'
-                    }`}>
-                      {selectedPaymentMethod === 'apple' && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-black" />
-                      )}
-                    </div>
-                    <span className="text-sm font-medium">Apple Pay</span>
-                  </div>
-                  <svg className="w-8 h-5" viewBox="0 0 38 24" fill="none">
-                    <rect width="38" height="24" rx="3" fill="#000"/>
-                    <text x="6" y="16" fill="white" fontSize="9" fontWeight="bold"> Pay</text>
-                  </svg>
-                </div>
-                <p className="text-xs text-gray-500 mt-1 ml-8">Pay with Apple Pay</p>
-              </div>
             </div>
           </div>
 
-          {/* Pay Now Button */}
-          <button
-            className={`w-full mt-8 py-4 rounded-md text-white text-sm font-medium tracking-wider transition-all ${
-              selectedPaymentMethod && !isProcessing
-                ? 'bg-black hover:bg-gray-800 cursor-pointer'
-                : 'bg-gray-300 cursor-not-allowed'
-            }`}
-            disabled={!selectedPaymentMethod || isProcessing}
-            onClick={handlePayment}
-          >
-            {isProcessing ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-                </svg>
-                Processing...
-              </span>
-            ) : (
-              'PAY NOW'
-            )}
-          </button>
+
         </div>
 
         {/* Right Side - Order Summary */}
