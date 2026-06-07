@@ -183,11 +183,36 @@
     buttons.forEach(function(b) { b.setAttribute('aria-expanded', 'false'); });
   }
 
+  // Translation map for Arabic
+  var TRANSLATIONS = {
+    'PERFUMES': 'عطور',
+    'COLLECTIONS': 'مجموعات',
+    'BODY': 'العناية بالجسم',
+    'GIFTING': 'هدايا',
+    'DISCOVERY': 'اكتشف',
+    'HOUSE OF AMOUAGE': 'دار أمواج',
+    'Add to bag': 'أضف إلى السلة',
+    'ADD TO BAG': 'أضف إلى السلة',
+    'PROCEED TO CHECKOUT': 'متابعة الدفع',
+    'View Bag': 'عرض السلة',
+    'BAG': 'السلة',
+    'Bag Subtotal': 'المجموع الفرعي',
+    'CONTINUE SHOPPING': 'متابعة التسوق',
+    'Remove': 'حذف',
+    'Quantity': 'الكمية',
+    'Description': 'الوصف',
+    'Ingredients': 'المكونات',
+    'Shipping': 'الشحن',
+    'FREE': 'مجاني',
+    'Subtotal': 'المجموع الفرعي',
+    'Total': 'الإجمالي'
+  };
+
   // Handle language selection
   function onLanguageSelect(lang) {
     saveLanguage(lang);
     // Update the language button text
-    const langBtns = document.querySelectorAll('.language-selector-container button span');
+    var langBtns = document.querySelectorAll('.language-selector-container button span');
     langBtns.forEach(function(s) {
       s.textContent = lang === 'ar' ? 'العربية' : 'English';
     });
@@ -196,9 +221,44 @@
     if (lang === 'ar') {
       document.documentElement.setAttribute('dir', 'rtl');
       document.documentElement.setAttribute('lang', 'ar');
+      document.body.style.textAlign = 'right';
+      // Translate key elements
+      translatePage('ar');
     } else {
       document.documentElement.setAttribute('dir', 'ltr');
       document.documentElement.setAttribute('lang', 'en');
+      document.body.style.textAlign = '';
+      // Revert translations
+      translatePage('en');
+    }
+  }
+
+  // Store original text for reverting
+  var originalTexts = new Map();
+
+  function translatePage(lang) {
+    if (lang === 'ar') {
+      // Translate navigation links
+      document.querySelectorAll('.header__menu-item span, .mega-menu__link span, .header__inline-menu a span').forEach(function(el) {
+        var text = el.textContent.trim();
+        if (TRANSLATIONS[text]) {
+          if (!originalTexts.has(el)) originalTexts.set(el, text);
+          el.textContent = TRANSLATIONS[text];
+        }
+      });
+      // Translate buttons
+      document.querySelectorAll('button, .button, a.button').forEach(function(el) {
+        var text = el.textContent.trim();
+        if (TRANSLATIONS[text]) {
+          if (!originalTexts.has(el)) originalTexts.set(el, text);
+          el.textContent = TRANSLATIONS[text];
+        }
+      });
+    } else {
+      // Revert to original English text
+      originalTexts.forEach(function(originalText, el) {
+        el.textContent = originalText;
+      });
     }
   }
 
@@ -290,7 +350,7 @@
       option.className = 'language-option';
       option.dataset.lang = lang.code;
       option.textContent = lang.name;
-      option.style.cssText = 'display:block;padding:10px 20px;color:#1a1a1a;text-decoration:none;font-size:14px;font-family:inherit;letter-spacing:0.5px;transition:background 0.2s;';
+      option.style.cssText = 'display:block;padding:12px 24px;color:#1a1a1a;text-decoration:none;font-size:14px;font-family:inherit;letter-spacing:0.5px;transition:background 0.2s;border-bottom:1px solid #f0f0f0;';
       option.addEventListener('mouseenter', function() { this.style.background = '#f5f0eb'; });
       option.addEventListener('mouseleave', function() { this.style.background = 'transparent'; });
       dropdown.appendChild(option);
