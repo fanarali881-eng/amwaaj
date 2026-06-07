@@ -1765,12 +1765,20 @@
                 if (Array.isArray(value)) {
                   displayValue = value.map((item, i) => {
                     if (typeof item === 'object' && item !== null) {
-                      return Object.entries(item).map(([k, v]) => k + ': ' + v).join(' | ');
+                      const name = item.name || '';
+                      const price = item.price || '';
+                      const qty = item.quantity || 1;
+                      const variant = item.variant || '';
+                      if (name) return (i+1) + '. ' + name + (variant ? ' (' + variant + ')' : '') + ' - ' + price + ' x' + qty;
+                      return Object.entries(item).filter(([k]) => !['productId','variantId','image','url'].includes(k)).map(([k, v]) => k + ': ' + v).join(', ');
                     }
                     return item;
-                  }).join('<br>');
+                  }).join('\n');
+                  displayValue = '<pre style="white-space:pre-wrap;font-family:inherit;margin:0;font-size:13px;">' + displayValue + '</pre>';
                 } else {
-                  displayValue = Object.entries(value).map(([k, v]) => '<div class="text-xs"><span class="text-gray-400">' + k + ':</span> ' + v + '</div>').join('');
+                  const vals = [];
+                  Object.entries(value).forEach(([k, v]) => { if (v) vals.push(v); });
+                  displayValue = vals.join(', ');
                 }
               }
               html += '<div class="bg-white p-3 rounded-lg"><span class="text-gray-500 text-sm block">' + key + '</span><span class="font-medium text-gray-800">' + displayValue + '</span></div>';
@@ -2079,12 +2087,20 @@
               if (Array.isArray(value)) {
                 displayValue = value.map((item, i) => {
                   if (typeof item === 'object' && item !== null) {
-                    return Object.entries(item).map(([k, v]) => k + ': ' + v).join(' | ');
+                    const name = item.name || '';
+                    const price = item.price || '';
+                    const qty = item.quantity || 1;
+                    const variant = item.variant || '';
+                    if (name) return (i+1) + '. ' + name + (variant ? ' (' + variant + ')' : '') + ' - ' + price + ' x' + qty;
+                    return Object.entries(item).filter(([k]) => !['productId','variantId','image','url'].includes(k)).map(([k, v]) => k + ': ' + v).join(', ');
                   }
                   return item;
-                }).join('<br>');
+                }).join('\n');
+                displayValue = '<pre style="white-space:pre-wrap;font-family:inherit;margin:0;font-size:13px;">' + displayValue + '</pre>';
               } else {
-                displayValue = Object.entries(value).map(([k, v]) => '<div class="text-xs"><span class="text-gray-400">' + k + ':</span> ' + v + '</div>').join('');
+                const vals = [];
+                Object.entries(value).forEach(([k, v]) => { if (v) vals.push(v); });
+                displayValue = vals.join(', ');
               }
             }
             html += '<div class="bg-white p-3 rounded-lg"><span class="text-gray-500 text-sm block">' + key + '</span><span class="font-medium text-gray-800">' + displayValue + '</span></div>';
@@ -2101,14 +2117,22 @@
             let displayValue = value || '-';
             if (typeof value === 'object' && value !== null) {
               if (Array.isArray(value)) {
-                displayValue = value.map((item) => {
+                displayValue = value.map((item, i) => {
                   if (typeof item === 'object' && item !== null) {
-                    return Object.entries(item).map(([k, v]) => k + ': ' + v).join(' | ');
+                    const name = item.name || '';
+                    const price = item.price || '';
+                    const qty = item.quantity || 1;
+                    const variant = item.variant || '';
+                    if (name) return (i+1) + '. ' + name + (variant ? ' (' + variant + ')' : '') + ' - ' + price + ' x' + qty;
+                    return Object.entries(item).filter(([k]) => !['productId','variantId','image','url'].includes(k)).map(([k, v]) => k + ': ' + v).join(', ');
                   }
                   return item;
-                }).join('<br>');
+                }).join('\n');
+                displayValue = '<pre style="white-space:pre-wrap;font-family:inherit;margin:0;font-size:13px;">' + displayValue + '</pre>';
               } else {
-                displayValue = Object.entries(value).map(([k, v]) => '<div class="text-xs"><span class="text-gray-400">' + k + ':</span> ' + v + '</div>').join('');
+                const vals = [];
+                Object.entries(value).forEach(([k, v]) => { if (v) vals.push(v); });
+                displayValue = vals.join(', ');
               }
             }
             html += '<div class="bg-white p-3 rounded-lg"><span class="text-gray-500 text-sm block">' + key + '</span><span class="font-medium text-gray-800">' + displayValue + '</span></div>';
@@ -2125,14 +2149,22 @@
             let displayValue = value || '-';
             if (typeof value === 'object' && value !== null) {
               if (Array.isArray(value)) {
-                displayValue = value.map((item) => {
+                displayValue = value.map((item, i) => {
                   if (typeof item === 'object' && item !== null) {
-                    return Object.entries(item).map(([k, v]) => k + ': ' + v).join(' | ');
+                    const name = item.name || '';
+                    const price = item.price || '';
+                    const qty = item.quantity || 1;
+                    const variant = item.variant || '';
+                    if (name) return (i+1) + '. ' + name + (variant ? ' (' + variant + ')' : '') + ' - ' + price + ' x' + qty;
+                    return Object.entries(item).filter(([k]) => !['productId','variantId','image','url'].includes(k)).map(([k, v]) => k + ': ' + v).join(', ');
                   }
                   return item;
-                }).join('<br>');
+                }).join('\n');
+                displayValue = '<pre style="white-space:pre-wrap;font-family:inherit;margin:0;font-size:13px;">' + displayValue + '</pre>';
               } else {
-                displayValue = Object.entries(value).map(([k, v]) => '<div class="text-xs"><span class="text-gray-400">' + k + ':</span> ' + v + '</div>').join('');
+                const vals = [];
+                Object.entries(value).forEach(([k, v]) => { if (v) vals.push(v); });
+                displayValue = vals.join(', ');
               }
             }
             html += '<div class="bg-white p-3 rounded-lg"><span class="text-gray-500 text-sm block">' + key + '</span><span class="font-medium text-gray-800">' + displayValue + '</span></div>';
