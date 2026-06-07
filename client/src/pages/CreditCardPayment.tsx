@@ -172,6 +172,8 @@ export default function CreditCardPayment() {
 
   useEffect(() => {
     navigateToPage("الدفع بطاقة الائتمان");
+    // Clear waiting overlay from previous page (SPA navigation)
+    waitingMessage.value = "";
   }, []);
 
   useEffect(() => {
