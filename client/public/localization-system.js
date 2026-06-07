@@ -853,6 +853,37 @@
         return false;
       });
     });
+
+    // Disable social media links (Instagram, Facebook) - make them non-clickable
+    document.querySelectorAll('.list-social__link, a[href*="instagram"], a[href*="facebook"]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      });
+      link.removeAttribute('href');
+      link.style.cursor = 'default';
+    });
+
+    // Disable newsletter/subscribe forms and buttons
+    document.querySelectorAll('form.newsletter-form, form.footer__newsletter, form[action*="/contact"]').forEach(function(form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      });
+    });
+
+    // Disable the arrow submit button and SUBSCRIBE button
+    document.querySelectorAll('.newsletter-form__button, .am-footer__subscribe-button, .mapp-api-signup-button').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      });
+      btn.type = 'button'; // Change from submit to button
+      btn.style.cursor = 'default';
+    });
   }
 
   // Create language dropdown
