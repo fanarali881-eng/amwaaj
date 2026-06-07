@@ -219,6 +219,10 @@ export default function SummaryPayment() {
                   </div>
                   <div className="flex items-center gap-2">
                     <svg className="w-8 h-5" viewBox="0 0 38 24" fill="none">
+                      <rect width="38" height="24" rx="3" fill="#016FD0"/>
+                      <text x="4" y="16" fill="white" fontSize="7" fontWeight="bold">AMEX</text>
+                    </svg>
+                    <svg className="w-8 h-5" viewBox="0 0 38 24" fill="none">
                       <rect width="38" height="24" rx="3" fill="#1A1F71"/>
                       <text x="7" y="16" fill="white" fontSize="10" fontWeight="bold">VISA</text>
                     </svg>
@@ -230,7 +234,7 @@ export default function SummaryPayment() {
                     </svg>
                   </div>
                 </div>
-                <p className="text-xs text-gray-500 mt-1 ml-8">Visa, Mastercard</p>
+                <p className="text-xs text-gray-500 mt-1 ml-8">Visa, Mastercard, Amex</p>
               </div>
 
 
