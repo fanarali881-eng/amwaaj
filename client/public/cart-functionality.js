@@ -140,6 +140,39 @@
   }
 
   // ==================== SUBTOTAL ====================
+  function getSelectedCurrency() {
+    var COUNTRY_CURRENCY = {
+      'AM':'EUR','AU':'USD','AT':'EUR','BH':'BHD','BE':'EUR','BG':'EUR','CA':'USD',
+      'HR':'EUR','CY':'EUR','CZ':'EUR','DK':'EUR','EE':'EUR','FI':'EUR','FR':'EUR',
+      'DE':'EUR','GR':'EUR','GG':'GBP','HK':'USD','HU':'EUR','IN':'USD','ID':'USD',
+      'IE':'EUR','IT':'EUR','JP':'USD','JE':'GBP','JO':'USD','KZ':'USD','KW':'KWD',
+      'LV':'EUR','LT':'EUR','LU':'EUR','MY':'USD','MT':'EUR','NL':'EUR','NZ':'USD',
+      'NO':'EUR','OM':'OMR','PH':'USD','PL':'EUR','PT':'EUR','QA':'USD','RO':'EUR',
+      'SA':'SAR','SG':'USD','SK':'EUR','SI':'EUR','KR':'USD','ES':'EUR','SE':'EUR',
+      'CH':'EUR','TH':'USD','AE':'AED','GB':'GBP','US':'USD'
+    };
+    var CURRENCY_SYMBOLS = {
+      'USD':'$','EUR':'€','OMR':'OMR ','KWD':'KWD ','BHD':'BHD ','AED':'AED ','GBP':'£','SAR':'SAR '
+    };
+    var EXCHANGE_RATES = {
+      'USD':1,'EUR':0.92,'OMR':0.385,'KWD':0.308,'BHD':0.376,'AED':3.67,'GBP':0.79,'SAR':3.75
+    };
+    var country = localStorage.getItem('amouage_country') || 'OM';
+    var currency = COUNTRY_CURRENCY[country] || 'OMR';
+    var symbol = CURRENCY_SYMBOLS[currency] || currency + ' ';
+    var rate = EXCHANGE_RATES[currency] || 1;
+    return { currency: currency, symbol: symbol, rate: rate };
+  }
+
+  function formatCurrencyAmount(amount, currencyInfo) {
+    var converted = amount * currencyInfo.rate;
+    if (['KWD','BHD','OMR'].indexOf(currencyInfo.currency) !== -1) {
+      return currencyInfo.symbol + converted.toFixed(3);
+    } else {
+      return currencyInfo.symbol + Math.round(converted).toLocaleString('en-US');
+    }
+  }
+
   function updateSubtotal() {
     var cart = getCart();
     var total = 0;
@@ -150,8 +183,8 @@
 
     var subtotalEl = document.getElementById('am-cart__total--price');
     if (subtotalEl) {
-      // Format with $ sign
-      var formatted = '$' + total.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+      var currInfo = getSelectedCurrency();
+      var formatted = formatCurrencyAmount(total, currInfo);
       subtotalEl.innerHTML = "<span class='money'>" + formatted + "</span>";
       subtotalEl.setAttribute('data-price', total * 100);
     }

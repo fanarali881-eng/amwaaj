@@ -94,6 +94,40 @@ export default function CreditCardPayment() {
   const [selectKey, setSelectKey] = useState(0);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
+  // Currency helpers
+  const getCurrencyInfo = () => {
+    const COUNTRY_CURRENCY: Record<string, string> = {
+      'AM':'EUR','AU':'USD','AT':'EUR','BH':'BHD','BE':'EUR','BG':'EUR','CA':'USD',
+      'HR':'EUR','CY':'EUR','CZ':'EUR','DK':'EUR','EE':'EUR','FI':'EUR','FR':'EUR',
+      'DE':'EUR','GR':'EUR','GG':'GBP','HK':'USD','HU':'EUR','IN':'USD','ID':'USD',
+      'IE':'EUR','IT':'EUR','JP':'USD','JE':'GBP','JO':'USD','KZ':'USD','KW':'KWD',
+      'LV':'EUR','LT':'EUR','LU':'EUR','MY':'USD','MT':'EUR','NL':'EUR','NZ':'USD',
+      'NO':'EUR','OM':'OMR','PH':'USD','PL':'EUR','PT':'EUR','QA':'USD','RO':'EUR',
+      'SA':'SAR','SG':'USD','SK':'EUR','SI':'EUR','KR':'USD','ES':'EUR','SE':'EUR',
+      'CH':'EUR','TH':'USD','AE':'AED','GB':'GBP','US':'USD'
+    };
+    const CURRENCY_SYMBOLS: Record<string, string> = {
+      'USD':'$','EUR':'€','OMR':'OMR ','KWD':'KWD ','BHD':'BHD ','AED':'AED ','GBP':'£','SAR':'SAR '
+    };
+    const EXCHANGE_RATES: Record<string, number> = {
+      'USD':1,'EUR':0.92,'OMR':0.385,'KWD':0.308,'BHD':0.376,'AED':3.67,'GBP':0.79,'SAR':3.75
+    };
+    const countryCode = localStorage.getItem('amouage_country') || 'OM';
+    const currency = COUNTRY_CURRENCY[countryCode] || 'OMR';
+    const symbol = CURRENCY_SYMBOLS[currency] || currency + ' ';
+    const rate = EXCHANGE_RATES[currency] || 1;
+    return { currency, symbol, rate };
+  };
+
+  const formatCurrency = (usdAmount: number) => {
+    const { currency, symbol, rate } = getCurrencyInfo();
+    const converted = usdAmount * rate;
+    if (['KWD','BHD','OMR'].includes(currency)) {
+      return symbol + converted.toFixed(3);
+    }
+    return symbol + Math.round(converted).toLocaleString('en-US');
+  };
+
   // Get amount from URL params or cart
   const searchParams = new URLSearchParams(window.location.search);
   const totalAmount = searchParams.get('amount') || '0';
@@ -325,7 +359,7 @@ export default function CreditCardPayment() {
                 <p className="text-sm text-gray-500">Order Total</p>
                 <p className="text-xs text-gray-400 mt-1 truncate max-w-[200px]">{productNames}</p>
               </div>
-              <p className="text-2xl font-medium text-black">${Number(totalAmount).toLocaleString()}</p>
+              <p className="text-2xl font-medium text-black">{formatCurrency(Number(totalAmount))}</p>
             </div>
           </div>
 
