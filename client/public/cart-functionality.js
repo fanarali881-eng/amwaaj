@@ -7,6 +7,32 @@
   'use strict';
 
   // ==================== CART STORAGE ====================
+  function migrateCart() {
+    // Clean up corrupted cart data from old discount script
+    try {
+      var cart = JSON.parse(localStorage.getItem('amouage_cart') || '[]');
+      var changed = false;
+      for (var i = 0; i < cart.length; i++) {
+        var p = cart[i].price || '';
+        // If price contains '-25%' or multiple numbers (corrupted by old discount script)
+        if (p.indexOf('-25%') !== -1 || (p.match(/[\d,.]+/g) || []).length > 1) {
+          // Extract just the first price number (original price)
+          var nums = p.match(/[\d,.]+/g);
+          var currency = p.match(/^[^\d]*/)[0] || '';
+          if (nums && nums.length >= 1) {
+            cart[i].price = currency + nums[0];
+            cart[i].priceNum = parseFloat(nums[0].replace(/,/g, '')) || 0;
+            changed = true;
+          }
+        }
+      }
+      if (changed) {
+        localStorage.setItem('amouage_cart', JSON.stringify(cart));
+      }
+    } catch(e) {}
+  }
+  migrateCart();
+
   function getCart() {
     try {
       return JSON.parse(localStorage.getItem('amouage_cart') || '[]');
