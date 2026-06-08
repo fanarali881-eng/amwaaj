@@ -4906,36 +4906,64 @@ Sign in</a><div class="menu-drawer__localization header-localization"><noscript>
     footerDiv.style.display = 'block';
     emptyDiv.style.display = 'none';
 
+    var isMobile = window.innerWidth <= 768;
     var html = '';
     for (var i = 0; i < cart.length; i++) {
       var item = cart[i];
       var itemTotal = (item.priceNum * item.quantity);
       var currency = item.price.replace(/[0-9.,\s]/g, '').trim() || '$';
-      html += '<div class="cart-page-item" style="display:flex; gap:20px; padding:24px 0; border-bottom:1px solid #e5e5e5; align-items:flex-start;">';
-      html += '<div style="width:140px; min-width:140px; max-width:140px;">';
-      html += '<img src="' + item.image + '" alt="' + item.name + '" style="width:100%; height:auto; object-fit:contain; background:#f7f4ef;">';
-      html += '</div>';
-      html += '<div style="flex:1; display:flex; flex-direction:column; gap:6px;">';
-      html += '<a href="' + (item.url || '#') + '" style="font-family:Gotham-Medium,sans-serif; font-size:15px; font-weight:500; color:#000; text-decoration:none; letter-spacing:0.5px;">' + item.name + '</a>';
-      if (item.variant) {
-        html += '<span style="font-size:13px; color:#333; text-transform:uppercase;">' + item.variant + '</span>';
-      }
-      html += '</div>';
-      html += '<div style="display:flex; flex-direction:column; align-items:flex-end; gap:12px; min-width:180px;">';
-      html += '<button class="cart-page-remove" data-index="' + i + '" style="background:none; border:none; cursor:pointer; font-size:13px; color:#000; text-decoration:underline; letter-spacing:0.3px;">Remove</button>';
-      html += '<div style="display:flex; align-items:center; border:1px solid #ccc;">';
-      html += '<button class="cart-page-minus" data-index="' + i + '" style="width:36px; height:36px; background:none; border:none; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center;">−</button>';
-      html += '<span style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:14px; border-left:1px solid #ccc; border-right:1px solid #ccc;">' + item.quantity + '</span>';
-      html += '<button class="cart-page-plus" data-index="' + i + '" style="width:36px; height:36px; background:none; border:none; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center;">+</button>';
-      html += '</div>';
-      html += '</div>';
-      html += '<div style="min-width:200px; text-align:right;">';
       var discountedItemTotal = (itemTotal * 0.75);
-      html += '<span style="color:#c00;text-decoration:line-through;font-size:0.85em;">' + currency + ' ' + itemTotal.toFixed(3) + '</span> ';
-      html += '<span style="font-family:Gotham-Medium,sans-serif; font-size:15px; font-weight:600;">' + currency + ' ' + discountedItemTotal.toFixed(3) + '</span> ';
-      html += '<span style="background:#c00;color:#fff;font-size:10px;padding:2px 5px;border-radius:3px;font-weight:bold;">-25%</span>';
-      html += '</div>';
-      html += '</div>';
+      if (isMobile) {
+        html += '<div class="cart-page-item" style="display:flex; gap:12px; padding:16px 0; border-bottom:1px solid #e5e5e5; align-items:flex-start; max-width:100%; overflow:hidden;">';
+        html += '<div style="width:80px; min-width:80px; max-width:80px;">';
+        html += '<img src="' + item.image + '" alt="' + item.name + '" style="width:100%; height:auto; object-fit:contain; background:#f7f4ef;">';
+        html += '</div>';
+        html += '<div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:4px;">';
+        html += '<a href="' + (item.url || '#') + '" style="font-family:Gotham-Medium,sans-serif; font-size:13px; font-weight:500; color:#000; text-decoration:none;">' + item.name + '</a>';
+        if (item.variant) {
+          html += '<span style="font-size:11px; color:#333; text-transform:uppercase;">' + item.variant + '</span>';
+        }
+        html += '<div style="margin-top:4px;">';
+        html += '<span style="color:#c00;text-decoration:line-through;font-size:11px;">' + currency + ' ' + itemTotal.toFixed(3) + '</span> ';
+        html += '<span style="font-weight:600;font-size:13px;">' + currency + ' ' + discountedItemTotal.toFixed(3) + '</span> ';
+        html += '<span style="background:#c00;color:#fff;font-size:9px;padding:2px 4px;border-radius:3px;font-weight:bold;">-25%</span>';
+        html += '</div>';
+        html += '<div style="display:flex; align-items:center; gap:10px; margin-top:8px;">';
+        html += '<div style="display:flex; align-items:center; border:1px solid #ccc;">';
+        html += '<button class="cart-page-plus" data-index="' + i + '" style="width:28px; height:28px; background:none; border:none; cursor:pointer; font-size:15px; display:flex; align-items:center; justify-content:center;">+</button>';
+        html += '<span style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-size:12px; border-left:1px solid #ccc; border-right:1px solid #ccc;">' + item.quantity + '</span>';
+        html += '<button class="cart-page-minus" data-index="' + i + '" style="width:28px; height:28px; background:none; border:none; cursor:pointer; font-size:15px; display:flex; align-items:center; justify-content:center;">−</button>';
+        html += '</div>';
+        html += '<button class="cart-page-remove" data-index="' + i + '" style="background:none; border:none; cursor:pointer; font-size:11px; color:#000; text-decoration:underline;">Remove</button>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+      } else {
+        html += '<div class="cart-page-item" style="display:flex; gap:20px; padding:24px 0; border-bottom:1px solid #e5e5e5; align-items:flex-start;">';
+        html += '<div style="width:140px; min-width:140px; max-width:140px;">';
+        html += '<img src="' + item.image + '" alt="' + item.name + '" style="width:100%; height:auto; object-fit:contain; background:#f7f4ef;">';
+        html += '</div>';
+        html += '<div style="flex:1; display:flex; flex-direction:column; gap:6px;">';
+        html += '<a href="' + (item.url || '#') + '" style="font-family:Gotham-Medium,sans-serif; font-size:15px; font-weight:500; color:#000; text-decoration:none; letter-spacing:0.5px;">' + item.name + '</a>';
+        if (item.variant) {
+          html += '<span style="font-size:13px; color:#333; text-transform:uppercase;">' + item.variant + '</span>';
+        }
+        html += '</div>';
+        html += '<div style="display:flex; flex-direction:column; align-items:flex-end; gap:12px; min-width:150px;">';
+        html += '<button class="cart-page-remove" data-index="' + i + '" style="background:none; border:none; cursor:pointer; font-size:13px; color:#000; text-decoration:underline; letter-spacing:0.3px;">Remove</button>';
+        html += '<div style="display:flex; align-items:center; border:1px solid #ccc;">';
+        html += '<button class="cart-page-minus" data-index="' + i + '" style="width:36px; height:36px; background:none; border:none; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center;">−</button>';
+        html += '<span style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:14px; border-left:1px solid #ccc; border-right:1px solid #ccc;">' + item.quantity + '</span>';
+        html += '<button class="cart-page-plus" data-index="' + i + '" style="width:36px; height:36px; background:none; border:none; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center;">+</button>';
+        html += '</div>';
+        html += '</div>';
+        html += '<div style="min-width:180px; text-align:right;">';
+        html += '<span style="color:#c00;text-decoration:line-through;font-size:0.85em;">' + currency + ' ' + itemTotal.toFixed(3) + '</span> ';
+        html += '<span style="font-family:Gotham-Medium,sans-serif; font-size:15px; font-weight:600;">' + currency + ' ' + discountedItemTotal.toFixed(3) + '</span> ';
+        html += '<span style="background:#c00;color:#fff;font-size:10px;padding:2px 5px;border-radius:3px;font-weight:bold;">-25%</span>';
+        html += '</div>';
+        html += '</div>';
+      }
     }
     container.innerHTML = html;
     updatePageSubtotal();
