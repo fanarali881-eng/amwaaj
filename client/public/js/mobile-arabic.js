@@ -12,6 +12,11 @@
            (navigator.maxTouchPoints > 0);
   }
 
+  // Check if user manually chose English
+  if (localStorage.getItem('amouage-lang') === 'en') {
+    return; // Don't apply Arabic translation
+  }
+
   // Translation dictionary
   const translations = {
     // Navigation
@@ -222,13 +227,56 @@
           langSelector.style.display = 'none';
         }
         
-        // Create a language toggle button inside the menu
+        // Create a proper language selector like the desktop version
         var langDiv = document.createElement('div');
+        langDiv.className = 'disclosure language-selector-container';
         langDiv.style.padding = '15px 25px';
         langDiv.style.borderTop = '1px solid #eee';
         langDiv.style.marginTop = '10px';
-        langDiv.innerHTML = '<button style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;background:none;border:none;padding:0;font-family:inherit;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>العربية / English</span></button>';
+        langDiv.style.display = 'block';
+        
+        var currentLang = document.documentElement.getAttribute('lang') === 'ar' ? 'العربية' : 'English';
+        
+        langDiv.innerHTML = '<div style="position:relative;">' +
+          '<button type="button" id="mobileLangToggle" style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;background:none;border:none;padding:8px 0;font-family:inherit;">' +
+            '<span>' + currentLang + '</span>' +
+            '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 6L7.83333 9.33333L11.1667 6H4.5Z" fill="black"/></svg>' +
+          '</button>' +
+          '<div id="mobileLangDropdown" style="display:none;position:absolute;bottom:100%;right:0;background:#fff;border:1px solid #ddd;border-radius:4px;padding:8px 0;min-width:120px;box-shadow:0 2px 8px rgba(0,0,0,0.1);z-index:100;">' +
+            '<a href="#" data-lang="ar" style="display:block;padding:8px 16px;text-decoration:none;color:#000;font-size:13px;">العربية</a>' +
+            '<a href="#" data-lang="en" style="display:block;padding:8px 16px;text-decoration:none;color:#000;font-size:13px;">English</a>' +
+          '</div>' +
+        '</div>';
+        
         menuUtility.appendChild(langDiv);
+        
+        // Add toggle functionality
+        setTimeout(function() {
+          var toggleBtn = document.getElementById('mobileLangToggle');
+          var dropdown = document.getElementById('mobileLangDropdown');
+          if (toggleBtn && dropdown) {
+            toggleBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+            });
+            
+            dropdown.querySelectorAll('a').forEach(function(link) {
+              link.addEventListener('click', function(e) {
+                e.preventDefault();
+                var lang = this.getAttribute('data-lang');
+                if (lang === 'en') {
+                  // Switch to English - reload without Arabic
+                  localStorage.setItem('amouage-lang', 'en');
+                  window.location.reload();
+                } else {
+                  // Switch to Arabic
+                  localStorage.setItem('amouage-lang', 'ar');
+                  window.location.reload();
+                }
+              });
+            });
+          }
+        }, 100);
       }
     }
 
