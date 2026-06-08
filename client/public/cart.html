@@ -4928,8 +4928,11 @@ Sign in</a><div class="menu-drawer__localization header-localization"><noscript>
       html += '<button class="cart-page-plus" data-index="' + i + '" style="width:36px; height:36px; background:none; border:none; cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center;">+</button>';
       html += '</div>';
       html += '</div>';
-      html += '<div style="min-width:100px; text-align:right;">';
-      html += '<span style="font-family:Gotham-Medium,sans-serif; font-size:15px; font-weight:500;">' + currency + ' ' + itemTotal.toLocaleString() + '</span>';
+      html += '<div style="min-width:200px; text-align:right;">';
+      var discountedItemTotal = (itemTotal * 0.75);
+      html += '<span style="color:#c00;text-decoration:line-through;font-size:0.85em;">' + currency + ' ' + itemTotal.toFixed(3) + '</span> ';
+      html += '<span style="font-family:Gotham-Medium,sans-serif; font-size:15px; font-weight:600;">' + currency + ' ' + discountedItemTotal.toFixed(3) + '</span> ';
+      html += '<span style="background:#c00;color:#fff;font-size:10px;padding:2px 5px;border-radius:3px;font-weight:bold;">-25%</span>';
       html += '</div>';
       html += '</div>';
     }
@@ -4949,7 +4952,12 @@ Sign in</a><div class="menu-drawer__localization header-localization"><noscript>
       }
     }
     var el = document.getElementById('cart-page-subtotal');
-    if (el) el.textContent = currency + ' ' + total.toLocaleString();
+    if (el) {
+      var discountedTotal = (total * 0.75);
+      el.innerHTML = '<span style="color:#c00;text-decoration:line-through;font-size:0.85em;">' + currency + ' ' + total.toFixed(3) + '</span> ' +
+        '<span style="font-weight:600;">' + currency + ' ' + discountedTotal.toFixed(3) + '</span> ' +
+        '<span style="background:#c00;color:#fff;font-size:10px;padding:2px 5px;border-radius:3px;font-weight:bold;">-25%</span>';
+    }
   }
 
   function bindPageEvents() {
