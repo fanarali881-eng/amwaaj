@@ -58,7 +58,7 @@
 
     // Discount percentage
     var discountNum = document.createElement('div');
-    discountNum.style.cssText = 'font-size:72px;font-weight:700;color:#000;margin:15px 0;line-height:1;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;';
+    discountNum.style.cssText = 'font-size:72px;font-weight:700;color:#cc0000;margin:15px 0;line-height:1;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;';
     discountNum.textContent = '25%';
 
     // Countdown container (always LTR: hours : minutes : seconds)
