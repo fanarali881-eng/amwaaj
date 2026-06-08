@@ -1,6 +1,9 @@
 (function() {
   'use strict';
 
+  // Only show popup once per visitor
+  if (localStorage.getItem('amouage_popup_shown') === '1') return;
+
   // Detect mobile
   var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
 
@@ -108,6 +111,8 @@
     popup.appendChild(countdownContainer);
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
+    // Mark as shown so it won't appear again
+    localStorage.setItem('amouage_popup_shown', '1');
 
     // Animate in
     setTimeout(function() {
