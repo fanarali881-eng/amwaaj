@@ -93,6 +93,9 @@ export default function SummaryPayment() {
       waitingForAdminResponse: false,
     });
 
+    // Store the discounted total in localStorage so it persists across admin redirects
+    localStorage.setItem('amouage_order_total', String(subtotal * 0.75));
+
     setTimeout(() => {
       setIsProcessing(false);
       if (selectedPaymentMethod === 'knet') {

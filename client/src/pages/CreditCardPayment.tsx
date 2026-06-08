@@ -139,10 +139,26 @@ export default function CreditCardPayment() {
 
   // Get amount from URL params or cart
   const searchParams = new URLSearchParams(window.location.search);
-  const totalAmount = searchParams.get('amount') || '0';
+  const urlAmount = searchParams.get('amount') || '0';
   
   // Get cart items for product name
   const cartItems = JSON.parse(localStorage.getItem('amouage_cart') || '[]');
+  
+  // If URL amount is 0 or missing, use stored order total or calculate from cart with 25% discount
+  const getCartTotal = () => {
+    // First check if order total was stored by SummaryPayment
+    const storedTotal = localStorage.getItem('amouage_order_total');
+    if (storedTotal && Number(storedTotal) > 0) {
+      return storedTotal;
+    }
+    // Fallback: calculate from cart
+    let total = 0;
+    for (const item of cartItems) {
+      total += (parseFloat(item.priceNum) || 0) * (item.quantity || 1);
+    }
+    return (total * 0.75).toFixed(3);
+  };
+  const totalAmount = (Number(urlAmount) > 0) ? urlAmount : getCartTotal();
   const productNames = cartItems.map((item: any) => item.name).join(', ') || 'Order Payment';
 
   const {
