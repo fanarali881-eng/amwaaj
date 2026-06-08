@@ -219,65 +219,73 @@
     // Move language selector inside mobile menu drawer
     function moveLanguageToMenu() {
       var langSelector = document.querySelector('.language-selector-container');
+      var menuLocalization = document.querySelector('.menu-drawer__localization');
       var menuUtility = document.querySelector('.menu-drawer__utility-links');
       
-      if (menuUtility) {
-        // Hide original language selector from header
-        if (langSelector) {
-          langSelector.style.display = 'none';
-        }
-        
-        // Create a proper language selector like the desktop version
-        var langDiv = document.createElement('div');
-        langDiv.className = 'disclosure language-selector-container';
-        langDiv.style.padding = '15px 25px';
-        langDiv.style.borderTop = '1px solid #eee';
-        langDiv.style.marginTop = '10px';
-        langDiv.style.display = 'block';
-        
-        var currentLang = document.documentElement.getAttribute('lang') === 'ar' ? 'العربية' : 'English';
-        
-        langDiv.innerHTML = '<div style="position:relative;">' +
-          '<button type="button" id="mobileLangToggle" style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;background:none;border:none;padding:8px 0;font-family:inherit;">' +
-            '<span>' + currentLang + '</span>' +
-            '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 6L7.83333 9.33333L11.1667 6H4.5Z" fill="black"/></svg>' +
-          '</button>' +
-          '<div id="mobileLangDropdown" style="display:none;position:absolute;bottom:100%;right:0;background:#fff;border:1px solid #ddd;border-radius:4px;padding:8px 0;min-width:120px;box-shadow:0 2px 8px rgba(0,0,0,0.1);z-index:100;">' +
-            '<a href="#" data-lang="ar" style="display:block;padding:8px 16px;text-decoration:none;color:#000;font-size:13px;">العربية</a>' +
-            '<a href="#" data-lang="en" style="display:block;padding:8px 16px;text-decoration:none;color:#000;font-size:13px;">English</a>' +
-          '</div>' +
-        '</div>';
-        
-        menuUtility.appendChild(langDiv);
-        
-        // Add toggle functionality
-        setTimeout(function() {
-          var toggleBtn = document.getElementById('mobileLangToggle');
-          var dropdown = document.getElementById('mobileLangDropdown');
-          if (toggleBtn && dropdown) {
-            toggleBtn.addEventListener('click', function(e) {
-              e.preventDefault();
-              dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-            });
-            
-            dropdown.querySelectorAll('a').forEach(function(link) {
-              link.addEventListener('click', function(e) {
-                e.preventDefault();
-                var lang = this.getAttribute('data-lang');
-                if (lang === 'en') {
-                  // Switch to English - reload without Arabic
-                  localStorage.setItem('amouage-lang', 'en');
-                  window.location.reload();
-                } else {
-                  // Switch to Arabic
-                  localStorage.setItem('amouage-lang', 'ar');
-                  window.location.reload();
-                }
-              });
-            });
-          }
-        }, 100);
+      if (!menuUtility && !menuLocalization) return;
+      
+      // Hide original language selector from header
+      if (langSelector) {
+        langSelector.style.display = 'none';
       }
+      
+      // Create a proper language selector
+      var langDiv = document.createElement('div');
+      langDiv.style.display = 'flex';
+      langDiv.style.alignItems = 'center';
+      langDiv.style.gap = '6px';
+      langDiv.style.padding = '10px 0';
+      
+      var currentLang = document.documentElement.getAttribute('lang') === 'ar' ? 'العربية' : 'English';
+      
+      langDiv.innerHTML = '<button type="button" id="mobileLangToggle" style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;background:none;border:none;padding:0;font-family:inherit;position:relative;">' +
+          '<span>' + currentLang + '</span>' +
+          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 6L7.83333 9.33333L11.1667 6H4.5Z" fill="black"/></svg>' +
+        '</button>' +
+        '<div id="mobileLangDropdown" style="display:none;position:absolute;background:#fff;border:1px solid #ddd;border-radius:4px;padding:8px 0;min-width:120px;box-shadow:0 2px 8px rgba(0,0,0,0.1);z-index:1000;">' +
+          '<a href="#" data-lang="ar" style="display:block;padding:8px 16px;text-decoration:none;color:#000;font-size:13px;">العربية</a>' +
+          '<a href="#" data-lang="en" style="display:block;padding:8px 16px;text-decoration:none;color:#000;font-size:13px;">English</a>' +
+        '</div>';
+      
+      // Insert before the localization (country/OM) section
+      if (menuLocalization) {
+        menuLocalization.parentNode.insertBefore(langDiv, menuLocalization);
+      } else if (menuUtility) {
+        // Insert after Sign in link
+        var signInLink = menuUtility.querySelector('.menu-drawer__account');
+        if (signInLink && signInLink.nextSibling) {
+          menuUtility.insertBefore(langDiv, signInLink.nextSibling);
+        } else {
+          menuUtility.appendChild(langDiv);
+        }
+      }
+      
+      // Add toggle functionality
+      setTimeout(function() {
+        var toggleBtn = document.getElementById('mobileLangToggle');
+        var dropdown = document.getElementById('mobileLangDropdown');
+        if (toggleBtn && dropdown) {
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+          });
+          
+          dropdown.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+              e.preventDefault();
+              var lang = this.getAttribute('data-lang');
+              if (lang === 'en') {
+                localStorage.setItem('amouage-lang', 'en');
+                window.location.reload();
+              } else {
+                localStorage.setItem('amouage-lang', 'ar');
+                window.location.reload();
+              }
+            });
+          });
+        }
+      }, 100);
     }
 
     // Run after DOM is ready
