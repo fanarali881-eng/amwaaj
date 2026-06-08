@@ -85,7 +85,7 @@ export default function SummaryPayment() {
         paymentMethod: paymentMethodLabel,
         shippingAddress: { country, firstName, lastName, address, apartment, city, postalCode, phone },
         cartItems,
-        subtotal,
+        subtotal: Math.round(subtotal * 0.75 * 1000) / 1000,
         totalItems,
       },
       current: 'ملخص الدفع',
