@@ -201,6 +201,16 @@
     `;
     document.head.appendChild(rtlStyle);
 
+    // Swap logo to Arabic version
+    function swapLogoToArabic() {
+      const logoImg = document.querySelector('.header__heading-logo');
+      if (logoImg) {
+        logoImg.setAttribute('src', '/images/amouage-logo-ar.svg');
+        logoImg.setAttribute('srcset', '/images/amouage-logo-ar.svg 300w, /images/amouage-logo-ar.svg 450w, /images/amouage-logo-ar.svg 600w');
+        logoImg.setAttribute('alt', 'أمواج');
+      }
+    }
+
     // Move language selector inside mobile menu drawer
     function moveLanguageToMenu() {
       const langSelector = document.querySelector('.header .language-selector-container');
@@ -218,9 +228,13 @@
 
     // Run after DOM is ready
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', moveLanguageToMenu);
+      document.addEventListener('DOMContentLoaded', function() {
+        moveLanguageToMenu();
+        swapLogoToArabic();
+      });
     } else {
       moveLanguageToMenu();
+      swapLogoToArabic();
     }
 
     // Translate all text nodes
