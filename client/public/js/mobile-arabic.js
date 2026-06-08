@@ -213,16 +213,22 @@
 
     // Move language selector inside mobile menu drawer
     function moveLanguageToMenu() {
-      const langSelector = document.querySelector('.header .language-selector-container');
-      const menuUtility = document.querySelector('.menu-drawer__utility-links');
-      if (langSelector && menuUtility) {
-        const langClone = langSelector.cloneNode(true);
-        langClone.style.display = 'block';
-        langClone.style.padding = '15px 20px';
-        langClone.style.borderTop = '1px solid #eee';
-        langClone.style.marginTop = '10px';
-        langClone.classList.add('menu-drawer-lang-selector');
-        menuUtility.appendChild(langClone);
+      var langSelector = document.querySelector('.language-selector-container');
+      var menuUtility = document.querySelector('.menu-drawer__utility-links');
+      
+      if (menuUtility) {
+        // Hide original language selector from header
+        if (langSelector) {
+          langSelector.style.display = 'none';
+        }
+        
+        // Create a language toggle button inside the menu
+        var langDiv = document.createElement('div');
+        langDiv.style.padding = '15px 25px';
+        langDiv.style.borderTop = '1px solid #eee';
+        langDiv.style.marginTop = '10px';
+        langDiv.innerHTML = '<button style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;background:none;border:none;padding:0;font-family:inherit;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>العربية / English</span></button>';
+        menuUtility.appendChild(langDiv);
       }
     }
 
