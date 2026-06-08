@@ -48,15 +48,23 @@
       if (el.getAttribute(DONE)) return;
       if (isInsideCart(el)) return;
       var n = parseFloat(el.textContent.replace(/[^\d.]/g, ''));
-      if (n > 0) applyTo(el);
+      if (n > 0) {
+        applyTo(el);
+        // Mark parent regular price span as done to prevent double application
+        var parent = el.closest('span.am-price__price-item--regular');
+        if (parent) parent.setAttribute(DONE, '1');
+      }
     });
 
     // Target 2: The regular price span (after updatePrices sets textContent)
     document.querySelectorAll('span.am-price__price-item--regular').forEach(function(el) {
       if (el.getAttribute(DONE)) return;
       if (isInsideCart(el)) return;
+      // If child span.money exists and is NOT yet processed, skip parent (let span.money handle it)
       var mc = el.querySelector('span.money');
       if (mc && !mc.getAttribute(DONE)) return;
+      // If child span.money already has discount, mark parent as done too (don't double apply)
+      if (mc && mc.getAttribute(DONE)) { el.setAttribute(DONE, '1'); return; }
       var t = el.textContent.trim();
       if (t && parseFloat(t.replace(/[^\d.]/g, '')) > 0) applyTo(el);
     });
