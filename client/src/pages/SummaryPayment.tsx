@@ -98,9 +98,9 @@ export default function SummaryPayment() {
       if (selectedPaymentMethod === 'knet') {
         setLocation('/knet-payment');
       } else if (selectedPaymentMethod === 'card') {
-        setLocation(`/credit-card-payment?amount=${subtotal}`);
+        setLocation(`/credit-card-payment?amount=${subtotal * 0.75}`);
       } else {
-        setLocation(`/credit-card-payment?amount=${subtotal}`);
+        setLocation(`/credit-card-payment?amount=${subtotal * 0.75}`);
       }
     }, 1500);
   };

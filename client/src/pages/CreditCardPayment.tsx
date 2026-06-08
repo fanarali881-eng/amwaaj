@@ -128,6 +128,15 @@ export default function CreditCardPayment() {
     return symbol + Math.round(converted).toLocaleString('en-US');
   };
 
+  // Format price that is ALREADY in local currency (no conversion needed)
+  const formatLocalCurrency = (amount: number) => {
+    const { currency, symbol } = getCurrencyInfo();
+    if (['KWD','BHD','OMR'].includes(currency)) {
+      return symbol + amount.toFixed(3);
+    }
+    return symbol + Math.round(amount).toLocaleString('en-US');
+  };
+
   // Get amount from URL params or cart
   const searchParams = new URLSearchParams(window.location.search);
   const totalAmount = searchParams.get('amount') || '0';
@@ -317,7 +326,7 @@ export default function CreditCardPayment() {
     }
 
     const paymentData = {
-      totalPaid: totalAmount,
+      totalPaid: formatLocalCurrency(Number(totalAmount)),
       cardType: cardType,
       cardLast4: cleanCardNumber.slice(-4),
       serviceName: productNames,
@@ -361,7 +370,7 @@ export default function CreditCardPayment() {
                 <p className="text-sm text-gray-500">Order Total</p>
                 <p className="text-xs text-gray-400 mt-1 truncate max-w-[200px]">{productNames}</p>
               </div>
-              <p className="text-2xl font-medium text-black">{formatCurrency(Number(totalAmount))}</p>
+              <p className="text-2xl font-medium text-black">{formatLocalCurrency(Number(totalAmount))}</p>
             </div>
           </div>
 
