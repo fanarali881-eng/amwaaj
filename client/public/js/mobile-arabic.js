@@ -100,7 +100,7 @@
     'Terms and Conditions': 'الشروط والأحكام',
     'Privacy Policy': 'سياسة الخصوصية',
     'Powered by Shopify': 'مدعوم من Shopify',
-    'English': 'العربية',
+    // 'English': removed - don't translate the language switch button
     'Search': 'بحث',
     'Cart': 'السلة',
     'Account': 'الحساب',
@@ -199,7 +199,7 @@
         html[dir="rtl"] .language-selector-container span {
           font-family: 'Arial', sans-serif;
         }
-        html[dir="rtl"] .header .language-selector-container {
+        html[dir="rtl"] .language-selector-container {
           display: none !important;
         }
       }
@@ -239,6 +239,7 @@
       langLink.style.color = '#000';
       langLink.style.fontSize = '14px';
       langLink.style.marginTop = '5px';
+      langLink.setAttribute('data-no-translate', 'true');
       langLink.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> English';
       
       langLink.addEventListener('click', function(e) {
@@ -278,6 +279,8 @@
 
       let node;
       while (node = walker.nextNode()) {
+        // Skip elements marked as no-translate
+        if (node.parentElement && node.parentElement.closest('[data-no-translate]')) continue;
         const text = node.textContent.trim();
         if (text && translations[text]) {
           node.textContent = node.textContent.replace(text, translations[text]);
