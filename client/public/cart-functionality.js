@@ -144,7 +144,17 @@
       if (item.variant) {
         itemsHTML += '<span class="cart-item__variant" style="font-size:12px;color:#666;letter-spacing:0.3px;">' + item.variant + '</span>';
       }
-      itemsHTML += '<div class="cart-item__price" style="font-size:14px;color:#000;font-weight:400;letter-spacing:0.3px;"><span class="money">' + item.price + '</span></div>';
+      // Show price with discount: old price strikethrough + new price + badge
+      // priceNum is ALREADY in local currency (read from DOM after updatePrices converted it)
+      var itemPriceNum = parseFloat(item.priceNum) || 0;
+      var currInfo = getSelectedCurrency();
+      var oldPriceFormatted = formatLocalPrice(itemPriceNum, currInfo);
+      var newPriceFormatted = formatLocalPrice(itemPriceNum * 0.75, currInfo);
+      itemsHTML += '<div class="cart-item__price" style="font-size:14px;color:#000;font-weight:400;letter-spacing:0.3px;">';
+      itemsHTML += '<span style="color:#c00;text-decoration:line-through;font-size:0.85em;">' + oldPriceFormatted + '</span> ';
+      itemsHTML += '<span style="font-weight:600;margin-left:4px;">' + newPriceFormatted + '</span> ';
+      itemsHTML += '<span style="background:#c00;color:#fff;font-size:10px;padding:2px 5px;border-radius:3px;font-weight:bold;margin-left:4px;">-25%</span>';
+      itemsHTML += '</div>';
       itemsHTML += '<div class="cart-item__quantity" style="display:flex;align-items:center;gap:0;margin-top:6px;border:1px solid #ccc;width:fit-content;">';
       itemsHTML += '<button class="cart-item__qty-btn cart-item__qty-minus" data-index="' + i + '" style="width:32px;height:32px;background:none;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">−</button>';
       itemsHTML += '<span class="cart-item__qty-value" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:13px;border-left:1px solid #ccc;border-right:1px solid #ccc;">' + item.quantity + '</span>';
@@ -199,6 +209,15 @@
     }
   }
 
+  // Format price that is ALREADY in local currency (no conversion needed)
+  function formatLocalPrice(amount, currencyInfo) {
+    if (['KWD','BHD','OMR'].indexOf(currencyInfo.currency) !== -1) {
+      return currencyInfo.symbol + amount.toFixed(3);
+    } else {
+      return currencyInfo.symbol + Math.round(amount).toLocaleString('en-US');
+    }
+  }
+
   function updateSubtotal() {
     var cart = getCart();
     var total = 0;
@@ -210,9 +229,13 @@
     var subtotalEl = document.getElementById('am-cart__total--price');
     if (subtotalEl) {
       var currInfo = getSelectedCurrency();
-      var formatted = formatCurrencyAmount(total, currInfo);
-      subtotalEl.innerHTML = "<span class='money'>" + formatted + "</span>";
-      subtotalEl.setAttribute('data-price', total * 100);
+      // priceNum is ALREADY in local currency, don't convert again
+      var oldTotal = formatLocalPrice(total, currInfo);
+      var newTotal = formatLocalPrice(total * 0.75, currInfo);
+      subtotalEl.innerHTML = '<span style="color:#c00;text-decoration:line-through;font-size:0.85em;">' + oldTotal + '</span> ' +
+        '<span style="font-weight:600;margin-left:4px;">' + newTotal + '</span> ' +
+        '<span style="background:#c00;color:#fff;font-size:10px;padding:2px 5px;border-radius:3px;font-weight:bold;margin-left:4px;">-25%</span>';
+      subtotalEl.setAttribute('data-price', total * 0.75 * 100);
     }
   }
 
@@ -299,28 +322,28 @@
       info.image = '';
     }
 
-    // Price - read the discounted price (new price after 25% off)
-    // First try to find the discount-new span that our discount script creates
-    var discountNewEl = document.querySelector('.am-price__price-item--regular [style*="font-weight:600"]');
-    if (!discountNewEl) discountNewEl = document.querySelector('.am-price__price__regular [style*="font-weight:600"]');
-    if (discountNewEl) {
-      info.price = discountNewEl.textContent.trim();
+    // Price - read the ORIGINAL price (before discount)
+    // The cart will handle showing discount display itself
+    // First try the strikethrough span (old price) created by discount-25.js
+    var oldPriceEl = document.querySelector('.am-price__price-item--regular [style*="line-through"]');
+    if (!oldPriceEl) oldPriceEl = document.querySelector('.am-price__price__regular [style*="line-through"]');
+    if (oldPriceEl) {
+      info.price = oldPriceEl.textContent.trim();
     } else {
-      // Fallback: read from original price elements
+      // Fallback: read from original price elements (before discount script runs)
       var priceEl = document.querySelector('.am-price__price-item--regular');
       if (!priceEl) priceEl = document.querySelector('.price-item--regular .money');
       if (!priceEl) priceEl = document.querySelector('.price-item--sale .money');
       if (!priceEl) priceEl = document.querySelector('.price-item .money');
       info.price = priceEl ? priceEl.textContent.trim() : '$0';
-      // If price contains multiple numbers (discount applied), extract just the new price
+      // If price contains multiple numbers (discount applied), extract the FIRST (original)
       var priceNumbers = info.price.match(/[\d,.]+/g);
       if (priceNumbers && priceNumbers.length > 1) {
-        // Second number is the discounted price
         var currency = info.price.match(/^[^\d]*/)[0] || '';
-        info.price = currency + priceNumbers[1];
+        info.price = currency + priceNumbers[0];
       }
     }
-    // Extract numeric value
+    // Extract numeric value (this is the ORIGINAL USD price before conversion)
     var priceText = info.price.replace(/[^0-9.,]/g, '').replace(/,/g, '');
     info.priceNum = parseFloat(priceText) || 0;
 
