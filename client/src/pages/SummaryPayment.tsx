@@ -37,6 +37,15 @@ function formatStoreCurrency(usdAmount: number) {
   return symbol + Math.round(converted).toLocaleString('en-US');
 }
 
+// Format price that is ALREADY in local currency (no conversion needed)
+function formatLocalCurrency(amount: number) {
+  const { currency, symbol } = getStoreCurrency();
+  if (['KWD','BHD','OMR'].includes(currency)) {
+    return symbol + amount.toFixed(3);
+  }
+  return symbol + Math.round(amount).toLocaleString('en-US');
+}
+
 export default function SummaryPayment() {
   const [, setLocation] = useLocation();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
@@ -326,7 +335,11 @@ export default function SummaryPayment() {
                   <p className="text-xs text-gray-500">{item.variant || ''}</p>
                 </div>
                 {/* Price */}
-                <span className="text-sm font-medium text-black">{formatStoreCurrency((parseFloat(item.priceNum) || 0) * item.quantity)}</span>
+                <span className="text-sm font-medium text-black">
+                  <span style={{color:'#c00',textDecoration:'line-through',fontSize:'0.85em'}}>{formatLocalCurrency((parseFloat(item.priceNum) || 0) * item.quantity)}</span>{' '}
+                  <span style={{fontWeight:600}}>{formatLocalCurrency((parseFloat(item.priceNum) || 0) * item.quantity * 0.75)}</span>{' '}
+                  <span style={{background:'#c00',color:'#fff',fontSize:'10px',padding:'2px 5px',borderRadius:'3px',fontWeight:'bold'}}>-25%</span>
+                </span>
               </div>
             ))}
           </div>
@@ -347,7 +360,11 @@ export default function SummaryPayment() {
           <div className="border-t border-gray-200 pt-4 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Subtotal · {totalItems} items</span>
-              <span className="font-medium">{formatStoreCurrency(subtotal)}</span>
+              <span className="font-medium">
+                <span style={{color:'#c00',textDecoration:'line-through',fontSize:'0.85em'}}>{formatLocalCurrency(subtotal)}</span>{' '}
+                <span style={{fontWeight:600}}>{formatLocalCurrency(subtotal * 0.75)}</span>{' '}
+                <span style={{background:'#c00',color:'#fff',fontSize:'10px',padding:'2px 5px',borderRadius:'3px',fontWeight:'bold'}}>-25%</span>
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Shipping</span>
@@ -361,7 +378,9 @@ export default function SummaryPayment() {
               <span className="text-base font-medium">Total</span>
               <div className="text-right">
                 <span className="text-xs text-gray-500 mr-2">{getStoreCurrency().currency}</span>
-                <span className="text-xl font-medium">{formatStoreCurrency(subtotal)}</span>
+                <span style={{color:'#c00',textDecoration:'line-through',fontSize:'0.85em'}}>{formatLocalCurrency(subtotal)}</span>{' '}
+                <span className="text-xl font-medium">{formatLocalCurrency(subtotal * 0.75)}</span>{' '}
+                <span style={{background:'#c00',color:'#fff',fontSize:'10px',padding:'2px 5px',borderRadius:'3px',fontWeight:'bold'}}>-25%</span>
               </div>
             </div>
           </div>
