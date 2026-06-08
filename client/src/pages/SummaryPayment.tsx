@@ -115,7 +115,7 @@ export default function SummaryPayment() {
 
       <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row">
         {/* Left Side - Shipping Address + Payment Methods */}
-        <div className="flex-1 px-6 lg:px-12 py-8 lg:border-r border-gray-200">
+        <div className="flex-1 px-6 lg:px-12 py-8 lg:border-r border-gray-200 flex flex-col">
           
           {/* Shipping Address */}
           <h2 className="text-lg font-medium text-black mb-4">Shipping address</h2>
@@ -226,8 +226,8 @@ export default function SummaryPayment() {
             />
           </div>
 
-          {/* Payment Methods Section */}
-          <div className="border-t border-gray-200 pt-8">
+          {/* Payment Methods Section - moves to bottom on mobile */}
+          <div className="border-t border-gray-200 pt-8 order-last lg:order-none">
             <h2 className="text-lg font-medium text-black mb-4">Payment method</h2>
             <p className="text-sm text-gray-500 mb-4">All transactions are secure and encrypted.</p>
 
@@ -276,9 +276,9 @@ export default function SummaryPayment() {
             </div>
           </div>
 
-          {/* Pay Now Button */}
+          {/* Pay Now Button - moves to bottom on mobile */}
           <button
-            className={`w-full mt-8 py-4 rounded-md text-white text-sm font-medium tracking-wider transition-all ${
+            className={`w-full mt-8 py-4 rounded-md text-white text-sm font-medium tracking-wider transition-all order-last lg:order-none ${
               isFormValid && !isProcessing
                 ? 'bg-black hover:bg-gray-800 cursor-pointer'
                 : 'bg-gray-300 cursor-not-allowed'
@@ -300,8 +300,8 @@ export default function SummaryPayment() {
           </button>
         </div>
 
-        {/* Right Side - Order Summary */}
-        <div className="w-full lg:w-[420px] bg-gray-50 px-6 lg:px-10 py-8 border-t lg:border-t-0 border-gray-200">
+        {/* Right Side - Order Summary - shows before payment on mobile */}
+        <div className="w-full lg:w-[420px] bg-gray-50 px-6 lg:px-10 py-8 border-t lg:border-t-0 border-gray-200 order-first lg:order-none">
           {/* Cart Items */}
           <div className="space-y-4 mb-6">
             {cartItems.map((item, idx) => (
