@@ -4978,7 +4978,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var currentPrice = element.getAttribute('tm-price');
         var convertedPrice = currentPrice * currencyRates[countryCodeInput];
         var updatedPrice = formatCurrency(Math.ceil(convertedPrice), currencyFormat[countryCodeInput]);
-        element.textContent = updatedPrice.replace(/\s+/g, " ");
+        var oldPrice = updatedPrice.replace(/\s+/g, " "); var discountedAmount = Math.ceil(convertedPrice * 0.75); var newPrice = formatCurrency(discountedAmount, currencyFormat[countryCodeInput]).replace(/\s+/g, " "); element.innerHTML = '<span style="color:#cc0000;text-decoration:line-through;font-size:0.85em;">' + oldPrice + '</span> <span style="font-weight:600;">' + newPrice + '</span> <span style="background:#cc0000;color:#fff;font-size:10px;padding:2px 5px;border-radius:3px;font-weight:bold;">-25%</span>';
       });
     }
   }
