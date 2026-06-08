@@ -194,9 +194,34 @@
         html[dir="rtl"] .language-selector-container span {
           font-family: 'Arial', sans-serif;
         }
+        html[dir="rtl"] .header .language-selector-container {
+          display: none !important;
+        }
       }
     `;
     document.head.appendChild(rtlStyle);
+
+    // Move language selector inside mobile menu drawer
+    function moveLanguageToMenu() {
+      const langSelector = document.querySelector('.header .language-selector-container');
+      const menuUtility = document.querySelector('.menu-drawer__utility-links');
+      if (langSelector && menuUtility) {
+        const langClone = langSelector.cloneNode(true);
+        langClone.style.display = 'block';
+        langClone.style.padding = '15px 20px';
+        langClone.style.borderTop = '1px solid #eee';
+        langClone.style.marginTop = '10px';
+        langClone.classList.add('menu-drawer-lang-selector');
+        menuUtility.appendChild(langClone);
+      }
+    }
+
+    // Run after DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', moveLanguageToMenu);
+    } else {
+      moveLanguageToMenu();
+    }
 
     // Translate all text nodes
     function translateTextNodes(element) {
