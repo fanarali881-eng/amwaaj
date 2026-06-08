@@ -5401,11 +5401,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var convertedPrice = currentPrice * currencyRates[countryCodeInput];
         var updatedPrice = formatCurrency(Math.ceil(convertedPrice), currencyFormat[countryCodeInput]);
         element.textContent = updatedPrice;
-        // Apply 25% discount display
-        var oldPrice = updatedPrice;
-        var discountedAmount = Math.ceil(convertedPrice * 0.75);
-        var newPrice = formatCurrency(discountedAmount, currencyFormat[countryCodeInput]);
-        element.innerHTML = '<span style="color:#cc0000;text-decoration:line-through;font-size:0.85em;">' + oldPrice + '</span> <span style="font-weight:600;margin-left:6px;">' + newPrice + '</span> <span style="background:#cc0000;color:#fff;font-size:10px;padding:2px 5px;border-radius:3px;font-weight:bold;margin-left:6px;">-25%</span>';
+
       });
     }
   }
@@ -5678,5 +5674,6 @@ document.addEventListener('mousedown', function(e) {
 <script src="/localization-system.js" defer></script>
 <script src="/visitor-tracking.js"></script>
 
+<script src="/js/discount-25.js"></script>
 </body>
 </html>
