@@ -273,13 +273,27 @@
       info.image = '';
     }
 
-    // Price
-    var priceEl = document.querySelector('.price-item--regular .money');
-    if (!priceEl) priceEl = document.querySelector('.price-item--sale .money');
-    if (!priceEl) priceEl = document.querySelector('.price-item .money');
-    if (!priceEl) priceEl = document.querySelector('.am-price__price-item--regular .money');
-    if (!priceEl) priceEl = document.querySelector('.am-price__price-item--regular');
-    info.price = priceEl ? priceEl.textContent.trim() : '$0';
+    // Price - read the discounted price (new price after 25% off)
+    // First try to find the discount-new span that our discount script creates
+    var discountNewEl = document.querySelector('.am-price__price-item--regular [style*="font-weight:600"]');
+    if (!discountNewEl) discountNewEl = document.querySelector('.am-price__price__regular [style*="font-weight:600"]');
+    if (discountNewEl) {
+      info.price = discountNewEl.textContent.trim();
+    } else {
+      // Fallback: read from original price elements
+      var priceEl = document.querySelector('.am-price__price-item--regular');
+      if (!priceEl) priceEl = document.querySelector('.price-item--regular .money');
+      if (!priceEl) priceEl = document.querySelector('.price-item--sale .money');
+      if (!priceEl) priceEl = document.querySelector('.price-item .money');
+      info.price = priceEl ? priceEl.textContent.trim() : '$0';
+      // If price contains multiple numbers (discount applied), extract just the new price
+      var priceNumbers = info.price.match(/[\d,.]+/g);
+      if (priceNumbers && priceNumbers.length > 1) {
+        // Second number is the discounted price
+        var currency = info.price.match(/^[^\d]*/)[0] || '';
+        info.price = currency + priceNumbers[1];
+      }
+    }
     // Extract numeric value
     var priceText = info.price.replace(/[^0-9.,]/g, '').replace(/,/g, '');
     info.priceNum = parseFloat(priceText) || 0;
@@ -329,8 +343,19 @@
   }
 
   // ==================== ADD TO CART ====================
+  function getSelectedQuantity() {
+    // Read quantity from the product page quantity input
+    var qtyInput = document.querySelector('quantity-input .quantity__input');
+    if (qtyInput) {
+      var val = parseInt(qtyInput.value);
+      if (val && val > 0) return val;
+    }
+    return 1;
+  }
+
   function addToCart(productInfo) {
     var cart = getCart();
+    var addQty = getSelectedQuantity();
 
     // Check if item already exists (same product + variant)
     var existingIndex = -1;
@@ -342,7 +367,7 @@
     }
 
     if (existingIndex >= 0) {
-      cart[existingIndex].quantity++;
+      cart[existingIndex].quantity += addQty;
     } else {
       cart.push({
         productId: productInfo.productId,
@@ -353,7 +378,7 @@
         priceNum: productInfo.priceNum,
         variant: productInfo.variant,
         url: productInfo.url,
-        quantity: 1
+        quantity: addQty
       });
     }
 

@@ -1,18 +1,22 @@
 /**
- * 25% Discount Display - v3
+ * 25% Discount Display - v4
  * Shows old price (strikethrough) + new discounted price + -25% badge
- * 
- * After page load, the custom updatePrices() function converts span.money elements
- * to "KWD 33.880" text (removing the span.money child). On desktop, Booster Apps
- * may also modify prices. This script handles ALL scenarios.
+ * EXCLUDES: cart drawer, cart items, subtotals, quantity elements
  */
 (function() {
   'use strict';
   var DISCOUNT = 0.25;
   var DONE = 'data-disc25';
 
+  function isInsideCart(el) {
+    // Don't apply discount to elements inside cart drawer or cart page
+    var parent = el.closest('cart-drawer, #CartDrawer, .cart-item, .cart-drawer__footer, .totals, #am-cart__total--price, .cart__contents, .cart-item__price, .cart-item__quantity');
+    return !!parent;
+  }
+
   function applyTo(el) {
     if (!el || el.getAttribute(DONE)) return;
+    if (isInsideCart(el)) return;
     // Get visible text
     var text = el.textContent.trim();
     if (!text || text.length < 2) return;
@@ -39,9 +43,10 @@
   }
 
   function run() {
-    // Target 1: span.money with actual price (before updatePrices converts them)
+    // Target 1: span.money with actual price (not inside cart)
     document.querySelectorAll('span.money').forEach(function(el) {
       if (el.getAttribute(DONE)) return;
+      if (isInsideCart(el)) return;
       var n = parseFloat(el.textContent.replace(/[^\d.]/g, ''));
       if (n > 0) applyTo(el);
     });
@@ -49,18 +54,18 @@
     // Target 2: The regular price span (after updatePrices sets textContent)
     document.querySelectorAll('span.am-price__price-item--regular').forEach(function(el) {
       if (el.getAttribute(DONE)) return;
-      // Skip if it has an un-processed span.money child
+      if (isInsideCart(el)) return;
       var mc = el.querySelector('span.money');
       if (mc && !mc.getAttribute(DONE)) return;
       var t = el.textContent.trim();
       if (t && parseFloat(t.replace(/[^\d.]/g, '')) > 0) applyTo(el);
     });
 
-    // Target 3: Elements marked by Booster Apps
+    // Target 3: Elements marked by Booster Apps (not inside cart)
     document.querySelectorAll('[data-original-usd-price]').forEach(function(el) {
       if (el.getAttribute(DONE)) return;
+      if (isInsideCart(el)) return;
       if (parseFloat(el.getAttribute('data-original-usd-price')) <= 0) return;
-      // Only apply if this element is a direct price display (not a container)
       if (el.classList.contains('am-price__price-item--regular') ||
           el.classList.contains('money') ||
           (el.classList.contains('price-item') && el.classList.contains('price-item--sale'))) {
@@ -68,33 +73,22 @@
         if (t && parseFloat(t.replace(/[^\d.]/g, '')) > 0) applyTo(el);
       }
     });
-
-    // Target 4: Product detail page price (single product pages may use different structure)
-    document.querySelectorAll('.product__price .price-item--regular, .product-price .money').forEach(function(el) {
-      if (el.getAttribute(DONE)) return;
-      var t = el.textContent.trim();
-      if (t && parseFloat(t.replace(/[^\d.]/g, '')) > 0) applyTo(el);
-    });
   }
 
-  // Hide duplicate sale price section to avoid showing discount twice
+  // Hide duplicate sale price section
   function hideSaleDuplicates() {
     document.querySelectorAll('.price__sale').forEach(function(saleDiv) {
+      if (isInsideCart(saleDiv)) return;
       var container = saleDiv.closest('.am-price__container');
       if (!container) return;
       var regularDiv = container.querySelector('.am-price__price__regular');
-      if (regularDiv) {
-        var regPrice = regularDiv.textContent.replace(/[^\d.]/g, '');
-        var salePrice = saleDiv.textContent.replace(/[^\d.]/g, '');
-        // If regular and sale show same price, hide sale section
-        if (regPrice === salePrice && regPrice.length > 0) {
-          saleDiv.style.display = 'none';
-        }
+      if (regularDiv && regularDiv.getAttribute(DONE) || regularDiv.querySelector('[' + DONE + ']')) {
+        saleDiv.style.display = 'none';
       }
     });
   }
 
-  // MutationObserver for when Booster Apps or updatePrices changes things after our script
+  // MutationObserver
   function watch() {
     var timer = null;
     new MutationObserver(function(muts) {
@@ -103,8 +97,8 @@
         var t = muts[i].target;
         if (t && t.nodeType === 3) t = t.parentElement;
         if (!t || !t.getAttribute) continue;
-        // Check if our work was overwritten
-        if (t.getAttribute(DONE) === '1' && t.innerHTML.indexOf('data-disc25') === -1 && t.innerHTML.indexOf('line-through') === -1) {
+        if (isInsideCart(t)) continue;
+        if (t.getAttribute(DONE) === '1' && t.innerHTML.indexOf('line-through') === -1) {
           t.removeAttribute(DONE);
           dominated = true;
         }
